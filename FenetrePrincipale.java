@@ -1,14 +1,9 @@
 package Echec;
 
 import javax.swing.*;
-
-
-
 import java.awt.*;
-import java.awt.event.*;
-import java.lang.Object;
 
-public class FenetrePrincipale extends JFrame
+public class FenetrePrincipale extends JFrame 
 	{
 		private JFrame fenetre;
 		private	JPanel ech[][];
@@ -18,20 +13,21 @@ public class FenetrePrincipale extends JFrame
 		
 		public FenetrePrincipale ()
 		{
-			fenetre = new JFrame();
-			ech = new JPanel[9][9];
-			lettre = new JLabel [8];
-			chiffre = new JLabel [8];
+			fenetre = new JFrame();  // On creer une nouvelle Fenêtre.
+			ech = new JPanel[9][9];  // On creer un tableau Jpanel a 2 dimensions.
+			lettre = new JLabel [8]; // Creation d'un tableau Jlabel.
+			chiffre = new JLabel [8]; // Creation d'un tableau Jlabel.
 	
 
-			// CONFIG DE LA FENETRE //
-			fenetre.setTitle("ChessGame");
+			// Initialisation des différenentes parties de ma fenête.
+			
+			fenetre.setTitle("ChessGame"); // Permet de donner un titre à la fenêter.
 			fenetre.setSize(800,620); // taille en pixel de la largeur et hauteur de la fenetre
-			fenetre.setLayout(new BorderLayout());
-			fenetre.setLocationRelativeTo(null);
+			fenetre.setLayout(new BorderLayout()); // permet de les répartir selon 5 emplacements les différents éléments. 
+			fenetre.setLocationRelativeTo(null); //  Permet à l'objet de se positionner au centre
 			fenetre.setResizable(false); // empeche le redimenssionnement de la fenetre  
-			fenetre.setVisible(true);
-			fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			fenetre.setVisible(true); // Rend la fenêtre visible.
+			fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//Termine le processus lorsqu'on clique sur la croix rouge
 		}
 			public void remplirLettre()
 			{
@@ -48,14 +44,14 @@ public class FenetrePrincipale extends JFrame
 			
 			public void remplirChiffre()
 			{
-				chiffre[0]=new JLabel("  8");
-				chiffre[1]=new JLabel("  7");
-				chiffre[2]=new JLabel("  6");
-				chiffre[3]=new JLabel("  5");
+				chiffre[0]=new JLabel("  0");
+				chiffre[1]=new JLabel("  1");
+				chiffre[2]=new JLabel("  2");
+				chiffre[3]=new JLabel("  3");
 				chiffre[4]=new JLabel("  4");
-				chiffre[5]=new JLabel("  3");
-				chiffre[6]=new JLabel("  2");
-				chiffre[7]=new JLabel("  1");
+				chiffre[5]=new JLabel("  5");
+				chiffre[6]=new JLabel("  6");
+				chiffre[7]=new JLabel("  7");
 				for(int i=0;i<8;i++) chiffre[i].setForeground(Color.BLACK); // Ecrit les chiffres en noirs.
 			}
 			
@@ -64,9 +60,9 @@ public class FenetrePrincipale extends JFrame
 				 for(int i=0;i<8;i++){
 
 					for(int j=0;j<8;j++){
-						if( estGris == true )
+						if( estGris == true )// Ce test permet d'alterner la couleur de la case.
 						{
-							ech[i][j] = new JPanel(new BorderLayout());				 
+							ech[i][j] = new JPanel();				 
 							ech[i][j].setBackground(new Color(163,172,158));
 							ech[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));//Le contour de la case est en blanc
 							ech[i][j].setPreferredSize(new Dimension(60,60));
@@ -102,19 +98,25 @@ public class FenetrePrincipale extends JFrame
 				ech[8][8].setBorder(BorderFactory.createLineBorder(Color.WHITE)); 
 			}
 			
-			public void positionnerCases(){
+			public void positionnerCases()
+			{
 				posech = new JPanel();
-				posech.setLayout(new GridBagLayout());
+				posech.setLayout(new GridBagLayout());// permet d'agencer des composants sur une grille virtuelle. SetLayout permet de placer les composants insérés.
+				
+				/* Le principe est d'utiliser une grille virtuelle et de définir pour chaque sous-composant graphique 
+				un ensemble de paramètres qui permet de le positionner et de le dimensionner par rapport à la grille virtuelle
+				et par rapport aussi aux autres sous-composants.*/
+				
 				GridBagConstraints gbc = new GridBagConstraints();
-				gbc.gridx = 0;  // case de depart
+				gbc.gridx = 0;  // case de depart. Ils donnent l'abscisse et l'ordonnée du sous-composant dant la grille.
 				gbc.gridy = 0;  // case de depart
-				gbc.gridheight = 1;  // taille hauteur
-		        gbc.gridwidth = 1;  // taille largeur
+				gbc.gridheight = 1;  // taille hauteur du sous-composant dans la grille.
+		        gbc.gridwidth = 1;  // taille largeur du sous-composant dans la grille.
 		        
 		        for(int i=0;i<9;i++){
 					for(int j=0;j<9;j++){
-						gbc.gridx = i;
-						gbc.gridy = j;
+						gbc.gridx = i; // permet de positionner notre sous-composants
+						gbc.gridy = j;// permet de positionner notre sosu-composants
 						
 						posech.add(ech[i][j], gbc);
 					}
@@ -123,7 +125,8 @@ public class FenetrePrincipale extends JFrame
 				fenetre.add(posech,BorderLayout.CENTER);
 		    }
 			
-			public void afficherPieces(Echiquier e){
+			public void afficherPieces(Echiquier e)
+			{
 		        for(int i=0;i<8;i++) {
 					for(int j=0; j<8;j++){
 						if(e.estOccupee(i,j)){
@@ -204,7 +207,6 @@ public class FenetrePrincipale extends JFrame
 				}
 			}
 			
-
 	}
 
 
