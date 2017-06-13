@@ -1,6 +1,8 @@
 package Echec;
 
+
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 
@@ -11,12 +13,17 @@ import java.util.Scanner;
  *
  */
 
-public class Echiquier
+public class Echiquier 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Tableau de pièce.
 	 */
-	private Piece [][] tab;
+	Piece [][] tab;
 	
 	private Roi roiB;
 	private Roi roiN;
@@ -41,9 +48,130 @@ public class Echiquier
 		this.setWinner("");
 	
 	}
-		
-
-		
+	
+	public Echiquier ( Echiquier e )
+	{
+		this.tab = new Piece [8][8];
+		for(int i=0;i<8;i++)
+		{
+			for(int j=0;j<8;j++)
+			{
+				tab[i][j]=null;
+			}
+		}
+		for ( int i = 0; i < 8 ; i ++)
+		{
+			for ( int j = 0; j < 8 ; j ++ )
+			{
+				if ( e.estOccupee(i, j))
+				{
+					
+					if (( e.getTab(i, j).getNom().equals("NT")))
+					{
+						Tour t = new Tour((Tour)e.getTab(i, j));
+						this.setTab(t);
+						
+					}
+					
+					else if (( e.getTab(i, j).getNom().equals("NF")))
+					{
+						Fou f = new Fou((Fou)e.getTab(i, j));
+						this.setTab(f);
+						
+						
+					}
+				
+					else if (( e.getTab(i, j).getNom().equals("NC")))
+				{
+					
+					
+						Cavalier c = new Cavalier((Cavalier)e.getTab(i, j));
+						this.setTab(c);
+					
+				}
+				
+					else if (( e.getTab(i, j).getNom().equals("ND")))
+				{
+					
+						Dame d  = new Dame ( ( Dame)e.getTab(i, j));
+						this.setTab(d);
+					
+					
+				}
+					else if (( e.getTab(i, j).getNom().equals("NR")))
+				{
+					
+						Roi r  = new Roi  ( ( Roi)e.getTab(i, j));
+						this.setTab(r);
+					
+					
+				}
+				
+					else if (( e.getTab(i, j).getNom().equals("NP")))
+				{
+						Pion p = new Pion ( ( Pion)e.getTab(i, j));
+						this.setTab(p);
+					
+					
+				}
+				
+					else if (( e.getTab(i, j).getNom().equals("BT")))
+				{
+					
+						Tour t = new Tour ( (Tour)e.getTab(i, j));
+						this.setTab(t);
+					
+					
+				}
+					else if (( e.getTab(i, j).getNom().equals("BF")))
+				{
+					
+						Fou f  = new Fou ( ( Fou )e.getTab(i, j));
+						this.setTab(f);
+					
+					
+				}
+				
+					else if (( e.getTab(i, j).getNom().equals("BC")))
+				{
+					
+						Cavalier c = new Cavalier(( Cavalier)e.getTab(i, j));
+						this.setTab(c);
+					
+					
+				}
+				
+					else if (( e.getTab(i, j).getNom().equals("BD")))
+				{
+					
+						Dame d  = new Dame ( ( Dame)e.getTab(i, j));
+						this.setTab(d);
+					
+					
+				}
+					else if (( e.getTab(i, j).getNom().equals("BR")))
+				{
+					
+						Roi r = new Roi ( ( Roi)e.getTab(i, j));
+						this.setTab(r);
+					
+					
+				}
+				
+					else  if (( e.getTab(i, j).getNom().equals("BP")))
+				{
+					
+					
+						Pion p   = new Pion ( ( Pion )e.getTab(i, j));
+						this.setTab(p);
+					
+				}
+				}
+			}
+		}
+		setRois();
+		this.winner = new String(e.getWinner());
+	}
 		public void setRois(){
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
@@ -72,35 +200,90 @@ public class Echiquier
 		
 		public void initEchiquier()
 		{
+			 //Echecquier avec toutes les Pieces
+			/*setTab((new Tour("NT","noir",0,0,true,0)));
 			
-			setTab((new Tour("NT","noir",0,0,true,0)));
-			
-			/*setTab((new Cavalier("NC","noir",0,1,false,0)));
+			setTab((new Cavalier("NC","noir",0,1,false,0)));
 			setTab((new Fou("NF","noir",0,2,false,0)));
-		   setTab((new Dame("ND","noir",0,3,false,0)));*/
+		   setTab((new Dame("ND","noir",0,3,false,0)));
 		   setTab((new Roi("NR","noir",0,4,true,0)));
-		  /*setTab((new Fou("NF","noir",0,5,false,0)));
-		    setTab((new Cavalier("NC","noir",0,6,false,0)));*/
+		  setTab((new Fou("NF","noir",0,5,false,0)));
+		    setTab((new Cavalier("NC","noir",0,6,false,0)));
 		setTab((new Tour("NT","noir",0,7,true,0)));
 		    for(int i = 0; i <= 7; i++)
 		    {
-				//setTab( new Pion("NP","noir",1, i,true,0));
-				//setTab( new Pion("BP","blanc",6, i,true,0));
+				setTab( new Pion("NP","noir",1, i,true,0));
+				setTab( new Pion("BP","blanc",6, i,true,0));
 			}
 				
-		  //setTab((new Tour("BT","blanc",7,0,true,0)));
-		 /* setTab(( new Cavalier("BC","blanc",7,1,false,0)));
+		  setTab((new Tour("BT","blanc",7,0,true,0)));
+		 setTab(( new Cavalier("BC","blanc",7,1,false,0)));
 		   setTab(( new Fou("BF","blanc",7,2,false,0)));
-		    setTab((new Dame("BD","blanc",7,3,false,0)));*/
+		    setTab((new Dame("BD","blanc",7,3,false,0)));
 	        setTab(( new Roi("BR","blanc",7,4,true,0)));
-	        /*setTab(( new Fou("BF","blanc",7,5,false,0)));
-			setTab(( new Cavalier("BC","blanc",7,6,false,0)));*/
+	        setTab(( new Fou("BF","blanc",7,5,false,0)));
+			setTab(( new Cavalier("BC","blanc",7,6,false,0)));
 			setTab(( new Tour("BT","blanc",7,7,true,0)));  
-			setTab( new Pion("NP","noir",6, 2,true,0));
+			
+	        */
+			// Test pour l'échec et mat Blanc//
+			
+			/*setTab((new Tour("NT","noir",6,7,true,0)));
+	        setTab((new Tour("NT","noir",0,0,true,0)));
+	        setTab((new Roi("NR","noir",0,4,true,0)));
+	        setTab(( new Roi("BR","blanc",7,4,true,0)));*/
+	      	
+	     // Test pour l'échec et mat Noir//
+			/*
+	     		setTab((new Tour("BT","blanc",1,1,true,0)));
+	     	    setTab((new Tour("BT","blanc",1,6,true,0)));
+	     	    setTab((new Roi("NR","noir",0,4,true,0)));
+	     	    setTab(( new Roi("BR","blanc",7,4,true,0)));
+	     	 */     	
+			// Test pour le pat roi noir
+			
+			/*setTab((new Tour("BT","blanc",6,5,true,0)));
+	        setTab((new Tour("BT","blanc",1,0,true,0)));
+	        setTab((new Roi("NR","noir",0,7,true,0)));
+	        setTab(( new Roi("BR","blanc",7,4,true,0)));
+	        setTab((new Dame("BD","blanc",2,5,false,0)));*/
+	      	
+			
+			//Test pour le pat roi blanc
+			/*setTab((new Tour("NT","noir",6,5,true,0)));
+	        setTab((new Tour("NT","noir",1,3,true,0)));
+	        setTab((new Roi("NR","noir",0,7,true,0)));
+	        setTab(( new Roi("BR","blanc",7,0,true,0)));*/
 	        
-	       
-	        
-	        
+			// test égualité
+			/*setTab( new Tour("NT","noir",1, 7,true,0));
+			setTab((new Roi("BR","blanc",0,6,true,0)));
+        	setTab(( new Roi("NR","noir",7,4,true,0)));*/
+        	
+			
+			// Le roque Noir
+			/*setTab( new Tour("NT","noir",0,0 ,true,0));
+			setTab((new Roi("BR","blanc",7,4,true,0)));
+        	setTab(( new Roi("NR","noir",0,4,true,0)));
+        	setTab((new Tour("NT","noir",0,7,true,0)));*/
+			
+			// Le roque Blanc
+			/*setTab( new Tour("BT","blanc",7,0 ,true,0));
+			setTab((new Roi("BR","blanc",7,4,true,0)));
+			setTab(( new Roi("NR","noir",0,4,true,0)));
+			setTab((new Tour("BT","blanc",7,7,true,0)));*/
+			
+			// La Promotion
+			/*setTab( new Pion("NP","noir",6,0 ,true,0));
+			setTab((new Roi("BR","blanc",7,4,true,0)));
+        	setTab(( new Roi("NR","noir",0,4,true,0)));
+        	setTab((new Pion("BP","blanc",1,6,true,0)));*/
+        	
+        	// La prisse en passant
+        	/*setTab( new Pion("NP","noir",4,5 ,true,0));
+			setTab((new Roi("BR","blanc",7,4,true,0)));
+        	setTab(( new Roi("NR","noir",0,4,true,0)));
+        	setTab((new Pion("BP","blanc",6,6,true,0)));*/
 		}
 		
 	
@@ -134,10 +317,11 @@ public class Echiquier
 		 
 		 public boolean estOccupee ( int x, int y)
 		 {
-			 if (this.tab[x][y]==null) 
-				 return false;
-			 
-			return true;
+			 if (this.tab[x][y] != null)
+			 {
+				 return true;
+			 }
+			return false;
 		 }
 		 
 		 
@@ -210,21 +394,32 @@ public class Echiquier
 				 								int ordP = p.getOrdonnee();
 				 								int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 								int ordD = d.getOrdonnee();
-				 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+				 								ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
 				 								{
-				 									if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Dame)
 				 									{
-				 										listPiece.remove(i);
+				 										Dame da = (Dame) pi;
+				 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+				 										{
+				 											ite.remove();
+				 										}
 				 									}
 				 								}
 				 								enlevePiece(p);
 				 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 								this.setTab(p2);
-					 				
-				 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 								try
 				 								{
-				 									res = false;
-				 								}
+				 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
 				 								enlevePiece(p2);
 				 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 				 								setTab(p3);
@@ -232,7 +427,6 @@ public class Echiquier
 				 								setTab(r);
 				 								Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 								setTab(d1);
-				 								listPiece.add(d1);
 				 							}
 				 						
 				 							if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -241,31 +435,42 @@ public class Echiquier
 				 						
 				 								int absP = p.getAbscisse();
 				 								int ordP = p.getOrdonnee();
-				 								int absD = t.getAbscisse();// On sauve les coordonnées de la dame.
-				 								int ordD = t.getOrdonnee();
-				 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+				 								int absT = t.getAbscisse();// On sauve les coordonnées de la dame.
+				 								int ordT = t.getOrdonnee();
+				 								ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
 				 								{
-				 									if (listPiece.get(i).getAbscisse() == t.getAbscisse() && listPiece.get(i).getOrdonnee() == t.getOrdonnee())
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Tour)
 				 									{
-				 										listPiece.remove(i);
+				 										Tour to  = (Tour) pi;
+				 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+				 										{
+				 											ite.remove();
+				 										}
 				 									}
 				 								}
 				 								enlevePiece(p);
 				 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 								this.setTab(p2);
-					 				
-				 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 								
+				 								try
 				 								{
-				 									res = false;
-				 								}
+				 									if ( listPiece.get(cpt).getAbscisse() != t.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
 				 								enlevePiece(p2);
 				 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 				 								setTab(p3);
 				 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 								setTab(r);
-				 								Tour t1 = new Tour("BT","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+				 								Tour t1 = new Tour("BT","blanc",absT,ordT,t.getPremierMouvement(),t.getMvt());
 				 								setTab(t1);
-				 								listPiece.add(t1);
 				 							}
 				 						
 				 							if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -274,31 +479,43 @@ public class Echiquier
 				 						
 				 								int absP = p.getAbscisse();
 				 								int ordP = p.getOrdonnee();
-				 								int absD = f.getAbscisse();// On sauve les coordonnées de la dame.
-				 								int ordD = f.getOrdonnee();
-				 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+				 								int absF = f.getAbscisse();// On sauve les coordonnées de la dame.
+				 								int ordF = f.getOrdonnee();
+				 								ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
 				 								{
-				 									if (listPiece.get(i).getAbscisse() == f.getAbscisse() && listPiece.get(i).getOrdonnee() == f.getOrdonnee())
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Fou)
 				 									{
-				 										listPiece.remove(i);
+				 										Fou fo = (Fou) pi;
+				 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+				 										{
+				 											ite.remove();
+				 										}
 				 									}
 				 								}
 				 								enlevePiece(p);
 				 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 								this.setTab(p2);
 					 				
-				 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 								try
 				 								{
-				 									res = false;
-				 								}
+				 									if ( listPiece.get(cpt).getAbscisse() != f.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 				 								enlevePiece(p2);
 				 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 				 								setTab(p3);
 				 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 								setTab(r);
-				 								Fou f1 = new Fou("BF","blanc",absD,ordD,f.getPremierMouvement(),f.getMvt());
+				 								Fou f1 = new Fou("BF","blanc",absF,ordF,f.getPremierMouvement(),f.getMvt());
 				 								setTab(f1);
-				 								listPiece.add(f1);
 				 							}
 				 						
 				 							if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -307,31 +524,43 @@ public class Echiquier
 				 						
 				 								int absP = p.getAbscisse();
 				 								int ordP = p.getOrdonnee();
-				 								int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 								int ordD = ca.getOrdonnee();
-				 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+				 								int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 								int ordC = ca.getOrdonnee();
+				 								ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
 				 								{
-				 									if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Cavalier)
 				 									{
-				 										listPiece.remove(i);
+				 										Cavalier cav = (Cavalier) pi;
+				 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+				 										{
+				 											ite.remove();
+				 										}
 				 									}
 				 								}
 				 								enlevePiece(p);
 				 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 								this.setTab(p2);
 				 							
-				 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 								try
 				 								{
-				 									res = false;
-				 								}
+				 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 				 								enlevePiece(p2);
 				 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 				 								setTab(p3);
 				 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 								setTab(r);
-				 								Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 								Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 								setTab(c1);
-				 								listPiece.add(c1);
 				 							}
 				 						
 				 							if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -340,31 +569,44 @@ public class Echiquier
 				 						
 				 								int absP = p.getAbscisse();
 				 								int ordP = p.getOrdonnee();
-				 								int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 								int ordD = p4.getOrdonnee();
-				 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+				 								int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 								int ordPi = p4.getOrdonnee();
+				 								ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
 				 								{
-				 									if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
+				 									Piece pio = (Piece) ite.next();
+				 									if ( pio instanceof Pion)
 				 									{
-				 										listPiece.remove(i);
+				 										Pion pi = (Pion) ite.next();
+				 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+				 										{
+				 											ite.remove();
+				 										}
 				 									}
 				 								}
 				 								enlevePiece(p);
 				 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 								this.setTab(p2);
 					 				
-				 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 								try
 				 								{
-				 									res = false;
-				 								}
+				 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){} 
+				 								
 				 								enlevePiece(p2);
 				 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 				 								setTab(p3);
 				 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 								setTab(r);
-				 								Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 								Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 								setTab(p5);
-				 								listPiece.add(p5);
+				 								
 				 							}	
 				 						}
 				 					}
@@ -420,21 +662,34 @@ public class Echiquier
 					 								int ordP = p.getOrdonnee();
 					 								int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 					 								int ordD = d.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
 					 									{
-					 										listPiece.remove(i);
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 						 				
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
@@ -442,7 +697,6 @@ public class Echiquier
 					 								setTab(r);
 					 								Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 					 								setTab(d1);
-					 								listPiece.add(d1);
 					 							}
 					 						
 					 							if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -451,31 +705,43 @@ public class Echiquier
 					 						
 					 								int absP = p.getAbscisse();
 					 								int ordP = p.getOrdonnee();
-					 								int absD = t.getAbscisse();// On sauve les coordonnées de la dame.
-					 								int ordD = t.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								int absT = t.getAbscisse();// On sauve les coordonnées de la dame.
+					 								int ordT = t.getOrdonnee();
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == t.getAbscisse() && listPiece.get(i).getOrdonnee() == t.getOrdonnee())
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
 					 									{
-					 										listPiece.remove(i);
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 						 				
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != t.getAbscisse() && listPiece.get(c).getOrdonnee() != t.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
 					 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 					 								setTab(r);
-					 								Tour t1 = new Tour("BT","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+					 								Tour t1 = new Tour("BT","blanc",absT,ordT,t.getPremierMouvement(),t.getMvt());
 					 								setTab(t1);
-					 								listPiece.add(t1);
 					 							}
 					 						
 					 							if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -484,31 +750,43 @@ public class Echiquier
 					 						
 					 								int absP = p.getAbscisse();
 					 								int ordP = p.getOrdonnee();
-					 								int absD = f.getAbscisse();// On sauve les coordonnées de la dame.
-					 								int ordD = f.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								int absF = f.getAbscisse();// On sauve les coordonnées de la dame.
+					 								int ordF = f.getOrdonnee();
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == f.getAbscisse() && listPiece.get(i).getOrdonnee() == f.getOrdonnee())
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
 					 									{
-					 										listPiece.remove(i);
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 						 				
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != f.getAbscisse() && listPiece.get(c).getOrdonnee() != f.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
 					 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 					 								setTab(r);
-					 								Fou f1 = new Fou("BF","blanc",absD,ordD,f.getPremierMouvement(),f.getMvt());
+					 								Fou f1 = new Fou("BF","blanc",absF,ordF,f.getPremierMouvement(),f.getMvt());
 					 								setTab(f1);
-					 								listPiece.add(f1);
 					 							}
 					 						
 					 							if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -517,70 +795,92 @@ public class Echiquier
 					 						
 					 								int absP = p.getAbscisse();
 					 								int ordP = p.getOrdonnee();
-					 								int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-					 								int ordD = ca.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+					 								int ordC = ca.getOrdonnee();
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
 					 									{
-					 										listPiece.remove(i);
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 					 							
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
 					 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 					 								setTab(r);
-					 								Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+					 								Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 					 								setTab(c1);
-					 								listPiece.add(c1);
 					 							}
 					 						
-					 							if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
+					 							if ( getTab(x, y) instanceof Pion) // Si c'est un pion.
 					 							{
 					 								Pion p4 = new Pion ( (Pion)getTab(x, y));
 					 						
 					 								int absP = p.getAbscisse();
 					 								int ordP = p.getOrdonnee();
-					 								int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-					 								int ordD = p4.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								int absPi = p4.getAbscisse();// On sauve les coordonnées du Pion.
+					 								int ordPi = p4.getOrdonnee();
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
 					 									{
-					 										listPiece.remove(i);
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("NP", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 						 				
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("NP", "noir", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
 					 								Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 					 								setTab(r);
-					 								Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+					 								Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 					 								setTab(p5);
-					 								listPiece.add(p5);
 					 							}	
 					 						}
 					 					}
 						 			}
-					 				
-					 				
 					 				c ++;
 					 	}
 						if ( res == false)
@@ -703,7 +1003,7 @@ public class Echiquier
 									}
 								}
 							 }
-							 
+
 						boolean res = true;
 						int cpt = 0;
 						while ( cpt < listPiece.size() && res != false)
@@ -743,21 +1043,34 @@ public class Echiquier
 			 								int ordP = p.getOrdonnee();
 			 								int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 			 								int ordD = d.getOrdonnee();
-			 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+			 								ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
 			 								{
-			 									if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
 			 									{
-			 										listPiece.remove(i);
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
 			 									}
 			 								}
 			 								enlevePiece(p);
 			 								Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 			 								this.setTab(p2);
 				 				
-			 								if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 								try
 			 								{
-			 									res = false;
-			 								}
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+			 								
 			 								enlevePiece(p2);
 			 								Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 			 								setTab(p3);
@@ -765,7 +1078,6 @@ public class Echiquier
 			 								setTab(r);
 			 								Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 			 								setTab(d1);
-			 								listPiece.add(d1);
 			 							}
 			 						
 			 					
@@ -776,31 +1088,43 @@ public class Echiquier
 			 						
 			 							int absP = p.getAbscisse();
 			 							int ordP = p.getOrdonnee();
-			 							int absD = t.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = t.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == t.getAbscisse() && listPiece.get(i).getOrdonnee() == t.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absT = t.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordT = t.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Tour)
+		 									{
+		 										Tour to = (Tour) pi;
+		 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(p);
 			 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 			 							this.setTab(p2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != t.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+		 								
 			 							enlevePiece(p2);
 			 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 			 							setTab(p3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Tour t1 = new Tour("NT","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+			 							Tour t1 = new Tour("NT","noir",absT,ordT,t.getPremierMouvement(),t.getMvt());
 			 							setTab(t1);
-			 							listPiece.add(t1);
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -809,31 +1133,43 @@ public class Echiquier
 			 						
 			 							int absP = p.getAbscisse();
 			 							int ordP = p.getOrdonnee();
-			 							int absD = f.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = f.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == f.getAbscisse() && listPiece.get(i).getOrdonnee() == f.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absF = f.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordF = f.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Fou)
+		 									{
+		 										Fou fo = (Fou) pi;
+		 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(p);
 			 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 			 							this.setTab(p2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != f.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+		 								
 			 							enlevePiece(p2);
 			 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 			 							setTab(p3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Fou f1 = new Fou("NF","noir",absD,ordD,f.getPremierMouvement(),f.getMvt());
+			 							Fou f1 = new Fou("NF","noir",absF,ordF,f.getPremierMouvement(),f.getMvt());
 			 							setTab(f1);
-			 							listPiece.add(f1);
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -842,64 +1178,89 @@ public class Echiquier
 			 						
 			 							int absP = p.getAbscisse();
 			 							int ordP = p.getOrdonnee();
-			 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = ca.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordC = ca.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Cavalier)
+		 									{
+		 										Cavalier cav = (Cavalier) pi;
+		 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(p);
 			 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 			 							this.setTab(p2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+		 								
 			 							enlevePiece(p2);
 			 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 			 							setTab(p3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+			 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 			 							setTab(c1);
-			 							listPiece.add(c1);
+			 							
 			 						}
 			 						
-			 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
+			 						if ( getTab(x, y) instanceof Pion) // Si c'est un Pion
 			 						{
 			 							Pion p4 = new Pion ( (Pion)getTab(x, y));
 			 						
 			 							int absP = p.getAbscisse();
 			 							int ordP = p.getOrdonnee();
-			 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = p4.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordPi = p4.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pio = (Piece) ite.next();
+		 									if ( pio instanceof Pion)
+		 									{
+		 										Pion pi = (Pion) pio;
+		 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(p);
 			 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 			 							this.setTab(p2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+		 								
 			 							enlevePiece(p2);
 			 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 			 							setTab(p3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+			 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 			 							setTab(p5);
-			 							listPiece.add(p5);
 			 						}
 			 					}
 							}
@@ -937,8 +1298,8 @@ public class Echiquier
 					 						enlevePiece(p2);
 					 						Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 						setTab(p3);
-					 						Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-						 					setTab(r);
+					 						/*Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+						 					setTab(r);*/
 					 					}
 					 					
 					 					else
@@ -954,21 +1315,34 @@ public class Echiquier
 					 								int ordP = p.getOrdonnee();
 					 								int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 					 								int ordD = d.getOrdonnee();
-					 								for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
+					 								ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
 					 								{
-					 									if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
 					 									{
-					 										listPiece.remove(i);
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
 					 									}
 					 								}
 					 								enlevePiece(p);
 					 								Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 								this.setTab(p2);
 						 				
-					 								if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 								try
 					 								{
-					 									res = false;
-					 								}
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+					 								
 					 								enlevePiece(p2);
 					 								Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 								setTab(p3);
@@ -976,7 +1350,6 @@ public class Echiquier
 					 								setTab(r);
 					 								Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 					 								setTab(d1);
-					 								listPiece.add(d1);
 					 							}
 					 						
 					 					
@@ -987,31 +1360,43 @@ public class Echiquier
 					 						
 					 							int absP = p.getAbscisse();
 					 							int ordP = p.getOrdonnee();
-					 							int absD = t.getAbscisse();// On sauve les coordonnées de la dame.
-					 							int ordD = t.getOrdonnee();
-					 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-					 							{
-					 								if (listPiece.get(i).getAbscisse() == t.getAbscisse() && listPiece.get(i).getOrdonnee() == t.getOrdonnee())
-					 								{
-					 									listPiece.remove(i);
-					 								}
-					 							}
+					 							int absT = t.getAbscisse();// On sauve les coordonnées de la dame.
+					 							int ordT = t.getOrdonnee();
+					 							ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
+				 								{
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Tour)
+				 									{
+				 										Tour to = (Tour) pi;
+				 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+				 										{
+				 											ite.remove();
+				 										}
+				 									}
+				 								}
 					 							enlevePiece(p);
 					 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 							this.setTab(p2);
 						 				
-					 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-					 							{
-					 								res = false;
-					 							}
+					 							try
+				 								{
+				 									if ( listPiece.get(c).getAbscisse() != t.getAbscisse() && listPiece.get(c).getOrdonnee() != t.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 					 							enlevePiece(p2);
 					 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 							setTab(p3);
 					 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 					 							setTab(r);
-					 							Tour t1 = new Tour("NT","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+					 							Tour t1 = new Tour("NT","noir",absT,ordT,t.getPremierMouvement(),t.getMvt());
 					 							setTab(t1);
-					 							listPiece.add(t1);
 					 						}
 					 						
 					 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -1020,31 +1405,43 @@ public class Echiquier
 					 						
 					 							int absP = p.getAbscisse();
 					 							int ordP = p.getOrdonnee();
-					 							int absD = f.getAbscisse();// On sauve les coordonnées de la dame.
-					 							int ordD = f.getOrdonnee();
-					 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-					 							{
-					 								if (listPiece.get(i).getAbscisse() == f.getAbscisse() && listPiece.get(i).getOrdonnee() == f.getOrdonnee())
-					 								{
-					 									listPiece.remove(i);
-					 								}
-					 							}
+					 							int absF = f.getAbscisse();// On sauve les coordonnées du fou.
+					 							int ordF = f.getOrdonnee();
+					 							ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
+				 								{
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Fou)
+				 									{
+				 										Fou fo = (Fou)pi;
+				 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+				 										{
+				 											ite.remove();
+				 										}
+				 									}
+				 								}
 					 							enlevePiece(p);
 					 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 							this.setTab(p2);
 						 				
-					 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-					 							{
-					 								res = false;
-					 							}
+					 							try
+				 								{
+				 									if ( listPiece.get(c).getAbscisse() != f.getAbscisse() && listPiece.get(c).getOrdonnee() != f.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 					 							enlevePiece(p2);
 					 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 							setTab(p3);
 					 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 					 							setTab(r);
-					 							Fou f1 = new Fou("NF","noir",absD,ordD,f.getPremierMouvement(),f.getMvt());
+					 							Fou f1 = new Fou("NF","noir",absF,ordF,f.getPremierMouvement(),f.getMvt());
 					 							setTab(f1);
-					 							listPiece.add(f1);
 					 						}
 					 						
 					 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -1053,71 +1450,94 @@ public class Echiquier
 					 						
 					 							int absP = p.getAbscisse();
 					 							int ordP = p.getOrdonnee();
-					 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-					 							int ordD = ca.getOrdonnee();
-					 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-					 							{
-					 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-					 								{
-					 									listPiece.remove(i);
-					 								}
-					 							}
+					 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+					 							int ordC = ca.getOrdonnee();
+					 							ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
+				 								{
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Cavalier)
+				 									{
+				 										Cavalier cav = (Cavalier) pi;
+				 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+				 										{
+				 											ite.remove();
+				 										}
+				 									}
+				 								}
 					 							enlevePiece(p);
 					 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 							this.setTab(p2);
 						 				
-					 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-					 							{
-					 								res = false;
-					 							}
+					 							try
+				 								{
+				 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 					 							enlevePiece(p2);
 					 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 							setTab(p3);
 					 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 					 							setTab(r);
-					 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+					 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 					 							setTab(c1);
-					 							listPiece.add(c1);
 					 						}
 					 						
-					 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
+					 						if ( getTab(x, y) instanceof Pion) // Si c'est un Pion.
 					 						{
 					 							Pion p4 = new Pion ( (Pion)getTab(x, y));
 					 						
 					 							int absP = p.getAbscisse();
 					 							int ordP = p.getOrdonnee();
-					 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-					 							int ordD = p4.getOrdonnee();
-					 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-					 							{
-					 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-					 								{
-					 									listPiece.remove(i);
-					 								}
-					 							}
+					 							int absP4 = p4.getAbscisse();// On sauve les coordonnées du pion.
+					 							int ordP4 = p4.getOrdonnee();
+					 							ListIterator<Piece> ite = listPiece.listIterator();
+				 								while( ite.hasNext())
+				 								{
+				 									Piece pi = (Piece) ite.next();
+				 									if ( pi instanceof Pion)
+				 									{
+				 										Pion pio = (Pion)pi;
+				 										if ( pio.getAbscisse() == absP4 && pio.getOrdonnee() == ordP4)
+				 										{
+				 											ite.remove();
+				 										}
+				 									}
+				 								}
 					 							enlevePiece(p);
 					 							Pion p2 = new Pion ("BP", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 					 							this.setTab(p2);
-						 				
-					 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-					 							{
-					 								res = false;
-					 							}
+					 							try
+				 								{
+				 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+				 									{
+				 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+				 										{
+				 											res = false;
+				 										}
+				 									}
+					 							}catch ( IndexOutOfBoundsException e){}
+				 								
 					 							enlevePiece(p2);
 					 							Pion p3 = new Pion ("BP", "blanc", absP, ordP, p1.getPremierMouvement(),((Pion) p1).getMvt() );
 					 							setTab(p3);
 					 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 					 							setTab(r);
-					 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
-					 							setTab(p5);
-					 							listPiece.add(p5);
+					 							Pion p5 = new Pion("NP","noir",absP4,ordP4,p4.getPremierMouvement(),p4.getMvt());
+					 							setTab(p5);	
 					 						}
 					 					}
 					 					
 						 			}
-						 			
-					 				c ++;
-					 	}
+					 					
+						 	  }
+					 		  c ++;
 					 	}
 						if ( res == false)
 						{
@@ -1125,7 +1545,7 @@ public class Echiquier
 							return res;
 						}
 							
-					 
+					
 					 if ( (x == p.getAbscisse()-1 && y == p.getOrdonnee()-1 ))
 					 {
 						 if (!(estOccupee(x, y)))
@@ -1178,7 +1598,6 @@ public class Echiquier
 								{
 									return false;
 								}
-								 
 								return true; // Je peut manger.
 								
 						}
@@ -1315,21 +1734,34 @@ public class Echiquier
 				 							int ordP = t.getOrdonnee();
 				 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 							int ordD = d.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+			 								
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
@@ -1337,7 +1769,6 @@ public class Echiquier
 				 							setTab(r);
 				 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 							setTab(d1);
-				 							listPiece.add(d1);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -1346,31 +1777,45 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 											Tour to = new Tour((Tour)pi);
+			 											if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 											{
+			 												ite.remove();
+			 											}
+			 										}
+			 									
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour)p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Tour t4 = new Tour("BT","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+				 							Tour t4 = new Tour("BT","blanc",absT,ordT,t.getPremierMouvement(),t.getMvt());
 				 							setTab(t4);
-				 							listPiece.add(t4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -1379,31 +1824,43 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Fou f2 = new Fou("BF","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+				 							Fou f2 = new Fou("BF","blanc",absF,ordF,t.getPremierMouvement(),t.getMvt());
 				 							setTab(f2);
-				 							listPiece.add(f2);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -1412,31 +1869,43 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 							setTab(c1);
-				 							listPiece.add(c1);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -1446,29 +1915,42 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = (Pion) ite.next();
+			 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour  ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 							setTab(p5);
 				 							listPiece.add(p5);
 				 						}
@@ -1514,21 +1996,34 @@ public class Echiquier
 				 							int ordP = t.getOrdonnee();
 				 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 							int ordD = d.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
@@ -1536,7 +2031,6 @@ public class Echiquier
 				 							setTab(r);
 				 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 							setTab(d1);
-				 							listPiece.add(d1);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -1545,31 +2039,44 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 											Tour to = new Tour((Tour)pi);
+			 											if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 											{
+			 												ite.remove();
+			 											}
+			 										}
+			 									
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Tour t4 = new Tour("NT","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+				 							Tour t4 = new Tour("NT","noir",absT,ordT,t.getPremierMouvement(),t.getMvt());
 				 							setTab(t4);
-				 							listPiece.add(t4);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -1578,31 +2085,43 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Fou f2 = new Fou("NF","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+				 							Fou f2 = new Fou("NF","noir",absF,ordF,t.getPremierMouvement(),t.getMvt());
 				 							setTab(f2);
-				 							listPiece.add(f2);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -1611,31 +2130,43 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 							setTab(c1);
-				 							listPiece.add(c1);
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -1644,31 +2175,44 @@ public class Echiquier
 				 						
 				 							int absP = t.getAbscisse();
 				 							int ordP = t.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = (Pion) pio;
+			 										if ( pi.getAbscisse() == absPi  && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(t);
 				 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 				 							this.setTab(t2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							
 				 							enlevePiece(t2);
 				 							Tour t3 = new Tour  ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 				 							setTab(t3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 							setTab(p5);
-				 							listPiece.add(p5);
 				 						}
 				 					}
 				 				}
@@ -1730,21 +2274,34 @@ public class Echiquier
 						 							int ordP = t.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame)pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
@@ -1752,7 +2309,6 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -1761,31 +2317,43 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour)p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("BT","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+						 							Tour t4 = new Tour("BT","blanc",absT,ordT,t.getPremierMouvement(),t.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -1794,31 +2362,44 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("BF","blanc",absD,ordD,t.getPremierMouvement(),t.getMvt());
+						 							Fou f2 = new Fou("BF","blanc",absF,ordF,t.getPremierMouvement(),t.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -1827,31 +2408,43 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -1861,31 +2454,43 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("NT", "noir", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour  ("NT", "noir", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
 						 						}
 						 					}
 							 			}
@@ -1938,21 +2543,34 @@ public class Echiquier
 						 							int ordP = t.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
@@ -1960,7 +2578,6 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -1969,31 +2586,44 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("NT","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+						 							Tour t4 = new Tour("NT","noir",absT,ordT,t.getPremierMouvement(),t.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -2002,31 +2632,43 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("NF","noir",absD,ordD,t.getPremierMouvement(),t.getMvt());
+						 							Fou f2 = new Fou("NF","noir",absF,ordF,t.getPremierMouvement(),t.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -2035,31 +2677,43 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav  = (Cavalier)pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -2068,38 +2722,48 @@ public class Echiquier
 						 						
 						 							int absP = t.getAbscisse();
 						 							int ordP = t.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(t);
 						 							Tour t2 = new Tour ("BT", "blanc", x, y, p1.getPremierMouvement(),((Tour) p1).getMvt());
 						 							this.setTab(t2);
-							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(t2);
 						 							Tour t3 = new Tour  ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Tour) p1).getMvt() );
 						 							setTab(t3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
 						 						}
 						 					}
 						 				}
-							 			}
-						 				
-						 				
-						 				c ++;
+							 	}
+						 		c ++;
 						 	}
 					 		
 					 	}
@@ -2258,21 +2922,34 @@ public class Echiquier
 				 							int ordP = f.getOrdonnee();
 				 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 							int ordD = d.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
@@ -2280,7 +2957,7 @@ public class Echiquier
 				 							setTab(r);
 				 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 							setTab(d1);
-				 							listPiece.add(d1);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -2289,31 +2966,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 										Tour to = (Tour) pi;
+			 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+				 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 				 							setTab(t4);
-				 							listPiece.add(t4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -2322,31 +3012,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Fou f4 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+				 							Fou f4 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 				 							setTab(f4);
-				 							listPiece.add(f4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -2355,31 +3058,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 							setTab(c1);
-				 							listPiece.add(c1);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -2389,31 +3105,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = (Pion) pio;
+			 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou  ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 							setTab(p5);
-				 							listPiece.add(p5);
+				 							
 				 						}
 				 					}
 					 			}
@@ -2456,21 +3185,34 @@ public class Echiquier
 				 							int ordP = f.getOrdonnee();
 				 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 							int ordD = d.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
@@ -2478,7 +3220,7 @@ public class Echiquier
 				 							setTab(r);
 				 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 							setTab(d1);
-				 							listPiece.add(d1);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -2487,31 +3229,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 										Tour to = (Tour) pi;
+			 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+				 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 				 							setTab(t4);
-				 							listPiece.add(t4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -2520,31 +3275,44 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Fou f4 = new Fou("NF","noir",absD,ordD,f.getPremierMouvement(),f.getMvt());
+				 							Fou f4 = new Fou("NF","noir",absF,ordF,f.getPremierMouvement(),f.getMvt());
 				 							setTab(f4);
-				 							listPiece.add(f4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -2553,29 +3321,42 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 							setTab(c1);
 				 							listPiece.add(c1);
 				 						}
@@ -2586,31 +3367,43 @@ public class Echiquier
 				 						
 				 							int absP = f.getAbscisse();
 				 							int ordP = f.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = (Pion) pio;
+			 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(f);
 				 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 				 							this.setTab(f2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(f2);
 				 							Fou f3 = new Fou  ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 				 							setTab(f3);
 				 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 				 							setTab(r);
-				 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 							setTab(p5);
-				 							listPiece.add(p5);
 				 						}
 				 					}
 					 			}
@@ -2667,21 +3460,34 @@ public class Echiquier
 						 							int ordP = f.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
@@ -2689,7 +3495,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -2698,31 +3504,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -2731,31 +3550,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f4 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+						 							Fou f4 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 						 							setTab(f4);
-						 							listPiece.add(f4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -2764,31 +3596,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -2798,31 +3643,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("NF", "noir", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou  ("NF", "noir", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
+						 							
 						 						}
 						 					}
 							 			}
@@ -2873,21 +3731,34 @@ public class Echiquier
 						 							int ordP = f.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != d.getAbscisse() && listPiece.get(c).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
@@ -2895,7 +3766,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -2904,31 +3775,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
-						 							enlevePiece(f);
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
+					 								enlevePiece(f);
 						 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
-							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -2937,31 +3821,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f4 = new Fou("NF","noir",absD,ordD,f.getPremierMouvement(),f.getMvt());
+						 							Fou f4 = new Fou("NF","noir",absF,ordF,f.getPremierMouvement(),f.getMvt());
 						 							setTab(f4);
-						 							listPiece.add(f4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -2970,31 +3867,44 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( ca.getAbscisse() == absC && ca.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou ("BF", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -3003,31 +3913,43 @@ public class Echiquier
 						 						
 						 							int absP = f.getAbscisse();
 						 							int ordP = f.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(f);
 						 							Fou f2 = new Fou ("BF", "blanc", x, y, p1.getPremierMouvement(),((Fou) p1).getMvt());
 						 							this.setTab(f2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(f2);
 						 							Fou f3 = new Fou  ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Fou) p1).getMvt() );
 						 							setTab(f3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
 						 						}
 						 					}
 							 			}
@@ -3112,6 +4034,7 @@ public class Echiquier
 			 
 			 if ( p1 instanceof Dame) // Si ma pièce est une dame.
 			 {
+				
 				 Dame  d = new Dame ( (Dame) p1 ); // On caste la Pièce en Dame.
 				 if ( d.DeplacerDame(x,y)) // Si les coordonnées saisie par le joueur sont valides.
 				 {
@@ -3154,414 +4077,13 @@ public class Echiquier
 								}
 					    	}
 					    }
+					    int c = 0;	
 					    boolean res = true;
-						int cpt = 0;
-						while ( cpt < listPiece.size() && res != false)
-						{
-							if ( d.getC().equals("noir"))
-							{
-								if ( echec(this,listPiece.get(cpt)))
-								{
-									if ( !(estOccupee(x, y)))
-				 					{
-				 					
-				 						
-				 						int absP = d.getAbscisse();
-				 						int ordP = d.getOrdonnee();
-				 						enlevePiece(d);
-				 						Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-				 						this.setTab(d2);
-					 				
-				 						if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 						{
-				 							res = false;
-				 						}
-				 						enlevePiece(d2);
-				 						Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-				 						setTab(d3);
-				 						Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-					 					setTab(r);
-				 					}
-				 					else
-				 					{
-				 					if ( (getTab(x, y).getC().equals("blanc")))// Si la pièce de ma case d'arrivée n'a pas la même couleur que moi.
-				 					{ 					
-				 						if ( getTab(x, y) instanceof Dame) // Si c'est une dame.
-				 						{
-				 							Dame d1 = new Dame ( (Dame)getTab(x, y));
-				 						
-				 							int absP = d.getAbscisse();
-				 							int ordP = d.getOrdonnee();
-				 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = d1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
-				 							enlevePiece(d);
-				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
-				 							this.setTab(d2);
-					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
-				 							enlevePiece(d2);
-				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-				 							setTab(d3);
-				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-				 							setTab(r);
-				 							Dame d4 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
-				 							setTab(d4);
-				 							listPiece.add(d4);
-				 						}
-				 						
-				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
-				 						{
-				 							Tour t1 = new Tour ( (Tour)getTab(x, y));
-				 						
-				 							int absP = d.getAbscisse();
-				 							int ordP = d.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
-				 							enlevePiece(d);
-				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-				 							this.setTab(d2);
-					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
-				 							enlevePiece(d2);
-				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-				 							setTab(d3);
-				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-				 							setTab(r);
-				 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
-				 							setTab(t4);
-				 							listPiece.add(t4);
-				 						}
-				 						
-				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
-				 						{
-				 							Fou f1 = new Fou ( (Fou)getTab(x, y));
-				 						
-				 							int absP = d.getAbscisse();
-				 							int ordP = d.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
-				 							enlevePiece(d);
-				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-				 							this.setTab(d2);
-					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
-				 							enlevePiece(d2);
-				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-				 							setTab(d3);
-				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-				 							setTab(r);
-				 							Fou f2 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
-				 							setTab(f2);
-				 							listPiece.add(f2);
-				 						}
-				 						
-				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
-				 						{
-				 							Cavalier ca = new Cavalier ( (Cavalier)getTab(x, y));
-				 						
-				 							int absP = d.getAbscisse();
-				 							int ordP = d.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
-				 							enlevePiece(d);
-				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-				 							this.setTab(d2);
-					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
-				 							enlevePiece(d2);
-				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame)p1).getMvt() );
-				 							setTab(d3);
-				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
-				 							setTab(c1);
-				 							listPiece.add(c1);
-				 						}
-				 						
-				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
-				 						{
-				 									
-				 							Pion p4 = new Pion ( (Pion)getTab(x, y));
-				 						
-				 							int absP = d.getAbscisse();
-				 							int ordP = d.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
-				 							enlevePiece(d);
-				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-				 							this.setTab(d2);
-					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
-				 							enlevePiece(d2);
-				 							Dame d3 = new Dame  ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-				 							setTab(d3);
-				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-				 							setTab(r);
-				 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
-				 							setTab(p5);
-				 							listPiece.add(p5);
-				 						}
-				 					}
-					 			}
-								}
-							}
-							else
-							{
-								if ( !(estOccupee(x, y)))
-			 					{
-			 					
-			 						
-			 						int absP = d.getAbscisse();
-			 						int ordP = d.getOrdonnee();
-			 						enlevePiece(d);
-			 						Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 						this.setTab(d2);
-				 				
-			 						if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 						{
-			 							res = false;
-			 						}
-			 						enlevePiece(d2);
-			 						Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 						setTab(d3);
-			 						Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-				 					setTab(r);
-			 					}
-			 					else
-			 					{
-			 					if ( (getTab(x, y).equals("noir")))// Si la pièce de ma case d'arrivée n'a pas la même couleur que moi.
-			 					{
-			 										 					
-			 						if ( getTab(x, y) instanceof Dame) // Si c'est une dame.
-			 						{
-			 							Dame d1 = new Dame ( (Dame)getTab(x, y));
-			 						
-			 							int absP = d.getAbscisse();
-			 							int ordP = d.getOrdonnee();
-			 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = d1.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
-			 							enlevePiece(d);
-			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 							this.setTab(d2);
-				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
-			 							enlevePiece(d2);
-			 							Dame d3 = new Dame ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 							setTab(d3);
-			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-			 							setTab(r);
-			 							Dame d4 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
-			 							setTab(d4);
-			 							listPiece.add(d4);
-			 						}
-			 						
-			 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
-			 						{
-			 							Tour t1 = new Tour ( (Tour)getTab(x, y));
-			 						
-			 							int absP = d.getAbscisse();
-			 							int ordP = d.getOrdonnee();
-			 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = t1.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
-			 							enlevePiece(d);
-			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 							this.setTab(d2);
-				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
-			 							enlevePiece(d2);
-			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 							setTab(d3);
-			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-			 							setTab(r);
-			 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
-			 							setTab(t4);
-			 							listPiece.add(t4);
-			 						}
-			 						
-			 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
-			 						{
-			 							Fou f1 = new Fou ( (Fou)getTab(x, y));
-			 						
-			 							int absP = d.getAbscisse();
-			 							int ordP = d.getOrdonnee();
-			 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = f1.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
-			 							enlevePiece(d);
-			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 							this.setTab(d2);
-				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
-			 							enlevePiece(d2);
-			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 							setTab(d3);
-			 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-			 							setTab(r);
-			 							Fou f2 = new Fou("NF","noir",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
-			 							setTab(f2);
-			 							listPiece.add(f2);
-			 						}
-			 						
-			 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
-			 						{
-			 							Cavalier ca = new Cavalier ( (Cavalier)getTab(x, y));
-			 						
-			 							int absP = d.getAbscisse();
-			 							int ordP = d.getOrdonnee();
-			 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = ca.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
-			 							enlevePiece(d);
-			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 							this.setTab(d2);
-				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
-			 							enlevePiece(d2);
-			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 							setTab(d3);
-			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-			 							setTab(r);
-			 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
-			 							setTab(c1);
-			 							listPiece.add(c1);
-			 						}
-			 						
-			 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
-			 						{
-			 							Pion p4 = new Pion ( (Pion)getTab(x, y));
-			 						
-			 							int absP = d.getAbscisse();
-			 							int ordP = d.getOrdonnee();
-			 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = p4.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
-			 							enlevePiece(d);
-			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
-			 							this.setTab(d2);
-				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
-			 							enlevePiece(d2);
-			 							Dame d3 = new Dame  ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-			 							setTab(d3);
-			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
-			 							setTab(r);
-			 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
-			 							setTab(p5);
-			 							listPiece.add(p5);
-			 						}
-			 					}
-							}
-							cpt ++;
-										
-						}
-						if ( res == false)
-						{
-							System.out.println("Vous ne pouvez pas bouger cette pièce car votre roi est echec et que ce mouvement n'enlève pas l'échec");
-							return res;
-						}
-					 
-						
-						int c = 0;			 	
 					 	this.setRois();
+					 	
 					 	if (d.getC().equals("noir"))
 					 	{
+					 		
 					 		while( c < listPiece.size() && res != false)
 						 	{
 						 				
@@ -3570,28 +4092,32 @@ public class Echiquier
 							 			{
 						 					if ( !(estOccupee(x, y)))
 						 					{
-						 					
+						 						
 						 						
 						 						int absP = d.getAbscisse();
 						 						int ordP = d.getOrdonnee();
 						 						enlevePiece(d);
+						 						
 						 						Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 						this.setTab(d2);
-							 				
-						 						if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 						{
-						 							res = false;
-						 						}
+						 						
+						 							if ( echec(this,listPiece.get(c)))
+						 							{
+						 								res = false;
+						 							}
+						 						
 						 						enlevePiece(d2);
 						 						Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
-						 						setTab(d3);
+						 						this.setTab(d3);
 						 						Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
-							 					setTab(r);
+							 					this.setTab(r);
+							 					
 						 					}
 						 					else
 						 					{
 						 					if ( (getTab(x, y).getC().equals("blanc")))// Si la pièce de ma case d'arrivée n'a pas la même couleur que moi.
-						 					{ 					
+						 					{ 	
+						 						
 						 						if ( getTab(x, y) instanceof Dame) // Si c'est une dame.
 						 						{
 						 							Dame d1 = new Dame ( (Dame)getTab(x, y));
@@ -3600,21 +4126,34 @@ public class Echiquier
 						 							int ordP = d.getOrdonnee();
 						 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
-						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
+						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 							try
 						 							{
-						 								res = false;
-						 							}
+						 								if ( listPiece.get(c).getAbscisse() != d1.getAbscisse() && listPiece.get(c).getOrdonnee() != d1.getOrdonnee())
+						 								{
+						 									if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 									{
+						 										res = false;
+						 									}
+						 								}
+						 							}catch( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
@@ -3622,7 +4161,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d4 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d4);
-						 							listPiece.add(d4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -3631,31 +4170,43 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
-							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 							try
 						 							{
-						 								res = false;
-						 							}
+						 								if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+						 								{
+						 									if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 									{
+						 										res = false;
+						 									}
+						 								}
+						 							}catch( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -3664,31 +4215,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+						 							Fou f2 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -3697,31 +4261,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
-							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 							
+						 							try
 						 							{
-						 								res = false;
-						 							}
+						 								if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+						 								{
+						 									if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+						 									{
+						 										res = false;
+						 									}
+						 								}
+						 							}catch( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame)p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -3731,39 +4308,51 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame  ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
+						 							
 						 						}
 						 					}
 							 			}
-							 			}
+							 		}
 						 				
 						 				c ++;
 						 	}
-					 		
 				 		}
 					 	else
 					 	{
@@ -3806,21 +4395,34 @@ public class Echiquier
 						 							int ordP = d.getOrdonnee();
 						 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != d1.getAbscisse() && listPiece.get(c).getOrdonnee() != d1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
@@ -3828,7 +4430,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d4 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d4);
-						 							listPiece.add(d4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -3837,31 +4439,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != t1.getAbscisse() && listPiece.get(c).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -3870,31 +4485,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != f1.getAbscisse() && listPiece.get(c).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("NF","noir",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+						 							Fou f2 = new Fou("NF","noir",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -3903,31 +4531,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier )
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != ca.getAbscisse() && listPiece.get(c).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -3936,31 +4577,44 @@ public class Echiquier
 						 						
 						 							int absP = d.getAbscisse();
 						 							int ordP = d.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(d);
 						 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
 						 							this.setTab(d2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(c).getAbscisse() != p4.getAbscisse() && listPiece.get(c).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(c), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(d2);
 						 							Dame d3 = new Dame  ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
 						 							setTab(d3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
+						 							
 						 						}
 						 					}
 							 			}
@@ -3968,17 +4622,557 @@ public class Echiquier
 						 				
 						 				c ++;
 						 	}
-					 		
+					 	}
 					 	
-					 	
-					 		System.out.println(listPiece.size());
 						
 						if ( res == false)
 						{
+							
 							System.out.println("Vous ne pouvez pas bouger cette pièce car vous mettriez votre roi en échec");
 							return res;
 						}
-
+					    
+						int cpt = 0;
+						while ( cpt < listPiece.size() && res != false)
+						{
+							if ( d.getC().equals("noir"))
+							{
+								
+								if ( echec(this,listPiece.get(cpt)))
+								{
+									if ( !(estOccupee(x, y)))
+				 					{
+										
+				 						
+				 						int absP = d.getAbscisse();
+				 						int ordP = d.getOrdonnee();
+				 						enlevePiece(d);
+				 						Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+				 						this.setTab(d2);
+					 				
+				 						if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+				 						{
+				 							
+				 							res = false;
+				 						}
+				 						enlevePiece(d2);
+				 						Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+				 						setTab(d3);
+				 						Roi r = new Roi ( "NR","noir",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+					 					setTab(r);
+				 					}
+				 					else
+				 					{
+				 					if ( (getTab(x, y).getC().equals("blanc")))// Si la pièce de ma case d'arrivée n'a pas la même couleur que moi.
+				 					{ 					
+				 						if ( getTab(x, y) instanceof Dame) // Si c'est une dame.
+				 						{
+				 							Dame d1 = new Dame ( (Dame)getTab(x, y));
+				 						
+				 							int absP = d.getAbscisse();
+				 							int ordP = d.getOrdonnee();
+				 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordD = d1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
+				 							enlevePiece(d);
+				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Pion) p1).getMvt());
+				 							this.setTab(d2);
+					 				
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							enlevePiece(d2);
+				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+				 							setTab(d3);
+				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+				 							setTab(r);
+				 							Dame d4 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
+				 							setTab(d4);
+				 							
+				 						}
+				 						
+				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
+				 						{
+				 							Tour t1 = new Tour ( (Tour)getTab(x, y));
+				 						
+				 							int absP = d.getAbscisse();
+				 							int ordP = d.getOrdonnee();
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 										Tour to = (Tour) pi;
+			 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
+				 							enlevePiece(d);
+				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+				 							this.setTab(d2);
+					 				
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							enlevePiece(d2);
+				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+				 							setTab(d3);
+				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+				 							setTab(r);
+				 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
+				 							setTab(t4);
+				 							
+				 						}
+				 						
+				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
+				 						{
+				 							Fou f1 = new Fou ( (Fou)getTab(x, y));
+				 						
+				 							int absP = d.getAbscisse();
+				 							int ordP = d.getOrdonnee();
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
+				 							enlevePiece(d);
+				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+				 							this.setTab(d2);
+					 				
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							enlevePiece(d2);
+				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+				 							setTab(d3);
+				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+				 							setTab(r);
+				 							Fou f2 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
+				 							setTab(f2);
+				 							
+				 						}
+				 						
+				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
+				 						{
+				 							Cavalier ca = new Cavalier ( (Cavalier)getTab(x, y));
+				 						
+				 							int absP = d.getAbscisse();
+				 							int ordP = d.getOrdonnee();
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
+				 							enlevePiece(d);
+				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+				 							this.setTab(d2);
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							enlevePiece(d2);
+				 							Dame d3 = new Dame ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame)p1).getMvt() );
+				 							setTab(d3);
+				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+				 							setTab(r);
+				 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
+				 							setTab(c1);
+				 							
+				 						}
+				 						
+				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
+				 						{
+				 									
+				 							Pion p4 = new Pion ( (Pion)getTab(x, y));
+				 						
+				 							int absP = d.getAbscisse();
+				 							int ordP = d.getOrdonnee();
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = ( Pion ) pio;
+			 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
+				 							enlevePiece(d);
+				 							Dame d2 = new Dame ("ND", "noir", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+				 							this.setTab(d2);
+					 				
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
+				 							enlevePiece(d2);
+				 							Dame d3 = new Dame  ("ND", "noir", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+				 							setTab(d3);
+				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+				 							setTab(r);
+				 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
+				 							setTab(p5);
+				 							
+				 						}
+				 					}
+					 			}
+								}
+								cpt++;
+							}
+							else
+							{
+								
+								if ( !(estOccupee(x, y)))
+			 					{
+									
+			 						
+			 						int absP = d.getAbscisse();
+			 						int ordP = d.getOrdonnee();
+			 						enlevePiece(d);
+			 						Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 						this.setTab(d2);
+				 				
+			 						if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+			 						{
+			 							
+			 							res = false;
+			 						}
+			 						enlevePiece(d2);
+			 						Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 						setTab(d3);
+			 						Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+				 					setTab(r);
+			 					}
+			 					else
+			 					{
+			 					if ( (getTab(x, y).equals("noir")))// Si la pièce de ma case d'arrivée n'a pas la même couleur que moi.
+			 					{
+			 										 					
+			 						if ( getTab(x, y) instanceof Dame) // Si c'est une dame.
+			 						{
+			 							Dame d1 = new Dame ( (Dame)getTab(x, y));
+			 						
+			 							int absP = d.getAbscisse();
+			 							int ordP = d.getOrdonnee();
+			 							int absD = d1.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordD = d1.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Dame)
+		 									{
+		 										Dame da = (Dame) pi;
+		 										if ( da.getAbscisse() == absD && d.getOrdonnee() == ordD)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
+			 							enlevePiece(d);
+			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 							this.setTab(d2);
+				 				
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != d1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d1.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
+			 							enlevePiece(d2);
+			 							Dame d3 = new Dame ("BT", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 							setTab(d3);
+			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+			 							setTab(r);
+			 							Dame d4 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
+			 							setTab(d4);
+			 							
+			 						}
+			 						
+			 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
+			 						{
+			 							Tour t1 = new Tour ( (Tour)getTab(x, y));
+			 						
+			 							int absP = d.getAbscisse();
+			 							int ordP = d.getOrdonnee();
+			 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordT = t1.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Tour)
+		 									{
+		 										Tour to = (Tour) pi;
+		 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
+			 							enlevePiece(d);
+			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 							this.setTab(d2);
+				 				
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
+			 							enlevePiece(d2);
+			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 							setTab(d3);
+			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+			 							setTab(r);
+			 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
+			 							setTab(t4);
+			 							
+			 						}
+			 						
+			 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
+			 						{
+			 							Fou f1 = new Fou ( (Fou)getTab(x, y));
+			 						
+			 							int absP = d.getAbscisse();
+			 							int ordP = d.getOrdonnee();
+			 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordF = f1.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Fou)
+		 									{
+		 										Fou fo  = (Fou) pi;
+		 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
+			 							enlevePiece(d);
+			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 							this.setTab(d2);
+				 				
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
+			 							enlevePiece(d2);
+			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 							setTab(d3);
+			 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
+			 							setTab(r);
+			 							Fou f2 = new Fou("NF","noir",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
+			 							setTab(f2);
+			 							
+			 						}
+			 						
+			 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
+			 						{
+			 							Cavalier ca = new Cavalier ( (Cavalier)getTab(x, y));
+			 						
+			 							int absP = d.getAbscisse();
+			 							int ordP = d.getOrdonnee();
+			 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordC = ca.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Cavalier)
+		 									{
+		 										Cavalier cav = (Cavalier) pi;
+		 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
+			 							enlevePiece(d);
+			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 							this.setTab(d2);
+				 				
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
+			 							enlevePiece(d2);
+			 							Dame d3 = new Dame ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 							setTab(d3);
+			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+			 							setTab(r);
+			 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
+			 							setTab(c1);
+			 							
+			 						}
+			 						
+			 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
+			 						{
+			 							Pion p4 = new Pion ( (Pion)getTab(x, y));
+			 						
+			 							int absP = d.getAbscisse();
+			 							int ordP = d.getOrdonnee();
+			 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordPi = p4.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pio = (Piece) ite.next();
+		 									if ( pio instanceof Pion)
+		 									{
+		 										Pion pi = (Pion) pio;
+		 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
+			 							enlevePiece(d);
+			 							Dame d2 = new Dame ("BD", "blanc", x, y, p1.getPremierMouvement(),((Dame) p1).getMvt());
+			 							this.setTab(d2);
+				 				
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
+			 							enlevePiece(d2);
+			 							Dame d3 = new Dame  ("BD", "blanc", absP, ordP, p1.getPremierMouvement(),((Dame) p1).getMvt() );
+			 							setTab(d3);
+			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
+			 							setTab(r);
+			 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
+			 							setTab(p5);
+			 							
+			 						}
+			 					}
+							}
+							
+										
+						}
+						cpt ++;
+						}
+						if ( res == false)
+						{
+							System.out.println("Vous ne pouvez pas bouger cette pièce car votre roi est echec et que ce mouvement n'enlève pas l'échec");
+							return res;
+						}
+						
+						
+						
+						
 					 	res = true;
 						int abs = d.getAbscisse();
 						int ord = d.getOrdonnee();
@@ -3999,6 +5193,7 @@ public class Echiquier
 					    	
 						   if(abs < x) // bas vers haut
 						    { 
+							   
 							   while( abs != x-1 && res != false )
 						    	{
 						    	    if( this.estOccupee(abs+1, y)) // Si la case est occcupée, mon chemin n'est pas valide car la tour ne peut pas enjambée des pièces.
@@ -4050,7 +5245,7 @@ public class Echiquier
 									ord ++;
 								}
 								return res ;
-							}
+						}
 							
 							if(x < abs && y > ord) // Mouvement du haut vers le bas à droite
 							{ 
@@ -4097,8 +5292,7 @@ public class Echiquier
 								}
 								return res;
 							}
-					 	}
-						}
+						
 				 }
 				 else 
 					 return false; // Le déplacement n'est pas valide.
@@ -4142,7 +5336,7 @@ public class Echiquier
 							 {
 								 if ( getTab(x,y) instanceof Tour && getTab(x,y).getC().equals("noir") && r.getPremierMouvement() && getTab(x, y).getPremierMouvement())
 								 {
-								 
+									 
 									 int abs = r.getAbscisse();
 									 int ord = r.getOrdonnee();
 									 boolean res = true;
@@ -4166,6 +5360,7 @@ public class Echiquier
 						    				
 						    				ord --;
 						    			}
+							    		
 						    			return res;
 									}
 							 
@@ -4189,6 +5384,7 @@ public class Echiquier
 						    				
 						    				ord ++;
 						    			}
+							    		
 						    			return res;
 							    	}
 								 
@@ -4197,7 +5393,7 @@ public class Echiquier
 						 }
 						 
 						 
-						 if(estOccupee(x, y) && r.equalsCouleur(getTab(x,y))) // Si le joueur veut placer une pièce à l'endroit d'une autre de ces pièces
+						 if(estOccupee(x, y) && r.equalsCouleur(getTab(x,y).getC())) // Si le joueur veut placer une pièce à l'endroit d'une autre de ces pièces
 							 return false;
 						 
 						
@@ -4256,7 +5452,7 @@ public class Echiquier
 							 }
 							 c++;
 						 }
-						 
+						 System.out.println(roque);
 						 if ( roque)
 						 {
 						 
@@ -4321,7 +5517,7 @@ public class Echiquier
 						 
 						 
 						 
-						 if(estOccupee(x, y) && r.equalsCouleur(getTab(x,y))) // Si le joueur veut placer une pièce à l'endroit d'une autre de ces pièces
+						 if(estOccupee(x, y) && r.equalsCouleur(getTab(x,y).getC())) // Si le joueur veut placer une pièce à l'endroit d'une autre de ces pièces
 							 return false;
 						 
 						 
@@ -4360,8 +5556,10 @@ public class Echiquier
 			 if ( p1 instanceof Cavalier )
 			 {
 				 Cavalier c = new Cavalier ( (Cavalier) p1); // On caste la Pièce
+				
 				 if ( c.DeplacerCavalier(x, y)) // Si les coordonnées saisie par le joueur sont valides.
 				 {
+					 
 					 if(estOccupee(x, y) && c.equalsCouleur(getTab(x,y))) // Si le joueur veut placer une pièce à l'endroit d'une autre de ces pièces
 						 return false;
 					 
@@ -4398,6 +5596,7 @@ public class Echiquier
 								}
 					    	}
 					    }
+					    
 					    boolean res = true;
 						int cpt = 0;
 						while ( cpt < listPiece.size() && res != false)
@@ -4409,7 +5608,7 @@ public class Echiquier
 									if ( !(estOccupee(x, y)))
 				 					{
 				 					
-				 						
+										
 				 						int absP = c.getAbscisse();
 				 						int ordP = c.getOrdonnee();
 				 						enlevePiece(c);
@@ -4438,21 +5637,34 @@ public class Echiquier
 				 							int ordP = c.getOrdonnee();
 				 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 				 							int ordD = d.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Dame)
+			 									{
+			 										Dame da = (Dame) pi;
+			 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(c);
 				 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 				 							this.setTab(c2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(c2);
 				 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 				 							setTab(c3);
@@ -4460,7 +5672,7 @@ public class Echiquier
 				 							setTab(r);
 				 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 				 							setTab(d1);
-				 							listPiece.add(d1);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -4469,31 +5681,44 @@ public class Echiquier
 				 						
 				 							int absP = c.getAbscisse();
 				 							int ordP = c.getOrdonnee();
-				 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = t1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordT = t1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Tour)
+			 									{
+			 										Tour to = (Tour) pi;
+			 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(c);
 				 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 				 							this.setTab(c2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(c2);
 				 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 				 							setTab(c3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+				 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 				 							setTab(t4);
-				 							listPiece.add(t4);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -4502,31 +5727,44 @@ public class Echiquier
 				 						
 				 							int absP = c.getAbscisse();
 				 							int ordP = c.getOrdonnee();
-				 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = f1.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordF = f1.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Fou)
+			 									{
+			 										Fou fo = (Fou) pi;
+			 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(c);
 				 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 				 							this.setTab(c2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(c2);
 				 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 				 							setTab(c3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Fou f2 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+				 							Fou f2 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 				 							setTab(f2);
-				 							listPiece.add(f2);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -4535,31 +5773,44 @@ public class Echiquier
 				 						
 				 							int absP = c.getAbscisse();
 				 							int ordP = c.getOrdonnee();
-				 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = ca.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordC = ca.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pi = (Piece) ite.next();
+			 									if ( pi instanceof Cavalier)
+			 									{
+			 										Cavalier cav = (Cavalier) pi;
+			 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(c);
 				 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 				 							this.setTab(c2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(c2);
 				 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 				 							setTab(c3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+				 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 				 							setTab(c1);
-				 							listPiece.add(c1);
+				 							
 				 						}
 				 						
 				 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -4569,34 +5820,48 @@ public class Echiquier
 				 						
 				 							int absP = c.getAbscisse();
 				 							int ordP = c.getOrdonnee();
-				 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-				 							int ordD = p4.getOrdonnee();
-				 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-				 							{
-				 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-				 								{
-				 									listPiece.remove(i);
-				 								}
-				 							}
+				 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+				 							int ordPi = p4.getOrdonnee();
+				 							ListIterator<Piece> ite = listPiece.listIterator();
+			 								while( ite.hasNext())
+			 								{
+			 									Piece pio = (Piece) ite.next();
+			 									if ( pio instanceof Pion)
+			 									{
+			 										Pion pi = (Pion) pio;
+			 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+			 										{
+			 											ite.remove();
+			 										}
+			 									}
+			 								}
 				 							enlevePiece(c);
 				 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 				 							this.setTab(c2);
 					 				
-				 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-				 							{
-				 								res = false;
-				 							}
+				 							try
+			 								{
+			 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+			 									{
+			 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+			 										{
+			 											res = false;
+			 										}
+			 									}
+				 							}catch ( IndexOutOfBoundsException e){}
+				 							
 				 							enlevePiece(c2);
 				 							Cavalier c3 = new Cavalier  ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 				 							setTab(c3);
 				 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 				 							setTab(r);
-				 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+				 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 				 							setTab(p5);
-				 							listPiece.add(p5);
+				 							
 				 						}
 				 					}
 								}
+							}
 							}
 							else
 							{
@@ -4633,21 +5898,34 @@ public class Echiquier
 			 							int ordP = c.getOrdonnee();
 			 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 			 							int ordD = d.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Dame)
+		 									{
+		 										Dame da = (Dame) pi;
+		 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(c);
 			 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 			 							this.setTab(c2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != d.getAbscisse() && listPiece.get(cpt).getOrdonnee() != d.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
 			 							enlevePiece(c2);
 			 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 			 							setTab(c3);
@@ -4655,7 +5933,7 @@ public class Echiquier
 			 							setTab(r);
 			 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 			 							setTab(d1);
-			 							listPiece.add(d1);
+			 						
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -4664,31 +5942,44 @@ public class Echiquier
 			 						
 			 							int absP = c.getAbscisse();
 			 							int ordP = c.getOrdonnee();
-			 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = t1.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordT = t1.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Tour)
+		 									{
+		 										Tour to = (Tour) pi;
+		 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(c);
 			 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 			 							this.setTab(c2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != t1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != t1.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
 			 							enlevePiece(c2);
 			 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 			 							setTab(c3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+			 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 			 							setTab(t4);
-			 							listPiece.add(t4);
+			 							
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -4697,31 +5988,44 @@ public class Echiquier
 			 						
 			 							int absP = c.getAbscisse();
 			 							int ordP = c.getOrdonnee();
-			 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = f1.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordF = f1.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Cavalier)
+		 									{
+		 										Fou fo = (Fou) pi;
+		 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(c);
 			 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 			 							this.setTab(c2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != f1.getAbscisse() && listPiece.get(cpt).getOrdonnee() != f1.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
 			 							enlevePiece(c2);
 			 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 			 							setTab(c3);
 			 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 			 							setTab(r);
-			 							Fou f2 = new Fou("NF","noir",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+			 							Fou f2 = new Fou("NF","noir",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 			 							setTab(f2);
-			 							listPiece.add(f2);
+			 							
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -4730,31 +6034,44 @@ public class Echiquier
 			 						
 			 							int absP = c.getAbscisse();
 			 							int ordP = c.getOrdonnee();
-			 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = ca.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordC = ca.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pi = (Piece) ite.next();
+		 									if ( pi instanceof Cavalier)
+		 									{
+		 										Cavalier cav = (Cavalier) pi;
+		 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(c);
 			 							Cavalier c2 = new Cavalier  ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 			 							this.setTab(c2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != ca.getAbscisse() && listPiece.get(cpt).getOrdonnee() != ca.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
 			 							enlevePiece(c2);
 			 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 			 							setTab(c3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+			 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 			 							setTab(c1);
-			 							listPiece.add(c1);
+			 							
 			 						}
 			 						
 			 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -4763,31 +6080,44 @@ public class Echiquier
 			 						
 			 							int absP = c.getAbscisse();
 			 							int ordP = c.getOrdonnee();
-			 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-			 							int ordD = p4.getOrdonnee();
-			 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-			 							{
-			 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-			 								{
-			 									listPiece.remove(i);
-			 								}
-			 							}
+			 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+			 							int ordPi = p4.getOrdonnee();
+			 							ListIterator<Piece> ite = listPiece.listIterator();
+		 								while( ite.hasNext())
+		 								{
+		 									Piece pio = (Piece) ite.next();
+		 									if ( pio instanceof Pion)
+		 									{
+		 										Pion pi = (Pion) pio;
+		 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+		 										{
+		 											ite.remove();
+		 										}
+		 									}
+		 								}
 			 							enlevePiece(c);
 			 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 			 							this.setTab(c2);
 				 				
-			 							if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-			 							{
-			 								res = false;
-			 							}
+			 							try
+		 								{
+		 									if ( listPiece.get(cpt).getAbscisse() != p4.getAbscisse() && listPiece.get(cpt).getOrdonnee() != p4.getOrdonnee())
+		 									{
+		 										if ( DeplacementEstValide(listPiece.get(cpt), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+		 										{
+		 											res = false;
+		 										}
+		 									}
+			 							}catch ( IndexOutOfBoundsException e){}
+			 							
 			 							enlevePiece(c2);
 			 							Cavalier c3 = new Cavalier  ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 			 							setTab(c3);
 			 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 			 							setTab(r);
-			 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+			 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 			 							setTab(p5);
-			 							listPiece.add(p5);
+			 							
 			 						}
 			 					}
 							}
@@ -4842,21 +6172,34 @@ public class Echiquier
 						 							int ordP = c.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != d.getAbscisse() && listPiece.get(cp).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
@@ -4864,7 +6207,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("BD","blanc",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -4873,31 +6216,44 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != t1.getAbscisse() && listPiece.get(cp).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("BT","blanc",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("BT","blanc",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -4906,31 +6262,44 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != f1.getAbscisse() && listPiece.get(cp).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("BF","blanc",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+						 							Fou f2 = new Fou("BF","blanc",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -4939,31 +6308,43 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != ca.getAbscisse() && listPiece.get(cp).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("BC","blanc",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("BC","blanc",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -4973,37 +6354,49 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = ( Pion)pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("NC", "noir", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != p4.getAbscisse() && listPiece.get(cp).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier  ("NC", "noir", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("BP","blanc",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("BP","blanc",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
+						 							
 						 						}
 						 					}
 							 			}
-							 			}
+							 		}
 						 				
-						 				cp ++;
+						 		cp ++;
 						 	}
 					 		
 				 		}
@@ -5048,21 +6441,34 @@ public class Echiquier
 						 							int ordP = c.getOrdonnee();
 						 							int absD = d.getAbscisse();// On sauve les coordonnées de la dame.
 						 							int ordD = d.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == d.getAbscisse() && listPiece.get(i).getOrdonnee() == d.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Dame)
+					 									{
+					 										Dame da = (Dame) pi;
+					 										if ( da.getAbscisse() == absD && da.getOrdonnee() == ordD)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != d.getAbscisse() && listPiece.get(cp).getOrdonnee() != d.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
@@ -5070,7 +6476,7 @@ public class Echiquier
 						 							setTab(r);
 						 							Dame d1 = new Dame("ND","noir",absD,ordD,d.getPremierMouvement(),d.getMvt());
 						 							setTab(d1);
-						 							listPiece.add(d1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Tour) // Si c'est une dame.
@@ -5079,31 +6485,44 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = t1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = t1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == t1.getAbscisse() && listPiece.get(i).getOrdonnee() == t1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absT = t1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordT = t1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Tour)
+					 									{
+					 										Tour to = (Tour) pi;
+					 										if ( to.getAbscisse() == absT && to.getOrdonnee() == ordT)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != t1.getAbscisse() && listPiece.get(cp).getOrdonnee() != t1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Tour t4 = new Tour("NT","noir",absD,ordD,t1.getPremierMouvement(),t1.getMvt());
+						 							Tour t4 = new Tour("NT","noir",absT,ordT,t1.getPremierMouvement(),t1.getMvt());
 						 							setTab(t4);
-						 							listPiece.add(t4);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Fou) // Si c'est une dame.
@@ -5112,31 +6531,44 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = f1.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = f1.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == f1.getAbscisse() && listPiece.get(i).getOrdonnee() == f1.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absF = f1.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordF = f1.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Fou)
+					 									{
+					 										Fou fo = (Fou) pi;
+					 										if ( fo.getAbscisse() == absF && fo.getOrdonnee() == ordF)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != f1.getAbscisse() && listPiece.get(cp).getOrdonnee() != f1.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "BR","blanc",this.getRoiB().getAbscisse(),this.getRoiB().getOrdonnee(),this.getRoiB().getPremierMouvement(),this.getRoiB().getMvt());
 						 							setTab(r);
-						 							Fou f2 = new Fou("NF","noir",absD,ordD,f1.getPremierMouvement(),f1.getMvt());
+						 							Fou f2 = new Fou("NF","noir",absF,ordF,f1.getPremierMouvement(),f1.getMvt());
 						 							setTab(f2);
-						 							listPiece.add(f2);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Cavalier) // Si c'est une dame.
@@ -5145,31 +6577,44 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = ca.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = ca.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == ca.getAbscisse() && listPiece.get(i).getOrdonnee() == ca.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absC = ca.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordC = ca.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pi = (Piece) ite.next();
+					 									if ( pi instanceof Cavalier)
+					 									{
+					 										Cavalier cav = (Cavalier) pi;
+					 										if ( cav.getAbscisse() == absC && cav.getOrdonnee() == ordC)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier  ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiN().getAbscisse(), this.getRoiN().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != ca.getAbscisse() && listPiece.get(cp).getOrdonnee() != ca.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Cavalier c1 = new Cavalier("NC","noir",absD,ordD,ca.getPremierMouvement(),ca.getMvt());
+						 							Cavalier c1 = new Cavalier("NC","noir",absC,ordC,ca.getPremierMouvement(),ca.getMvt());
 						 							setTab(c1);
-						 							listPiece.add(c1);
+						 							
 						 						}
 						 						
 						 						if ( getTab(x, y) instanceof Pion) // Si c'est une dame.
@@ -5178,37 +6623,50 @@ public class Echiquier
 						 						
 						 							int absP = c.getAbscisse();
 						 							int ordP = c.getOrdonnee();
-						 							int absD = p4.getAbscisse();// On sauve les coordonnées de la dame.
-						 							int ordD = p4.getOrdonnee();
-						 							for ( int i = 0; i < listPiece.size();i++)// J'enlève la pièce de mon arraylist.
-						 							{
-						 								if (listPiece.get(i).getAbscisse() == p4.getAbscisse() && listPiece.get(i).getOrdonnee() == p4.getOrdonnee())
-						 								{
-						 									listPiece.remove(i);
-						 								}
-						 							}
+						 							int absPi = p4.getAbscisse();// On sauve les coordonnées de la dame.
+						 							int ordPi = p4.getOrdonnee();
+						 							ListIterator<Piece> ite = listPiece.listIterator();
+					 								while( ite.hasNext())
+					 								{
+					 									Piece pio = (Piece) ite.next();
+					 									if ( pio instanceof Pion)
+					 									{
+					 										Pion pi = (Pion) pio;
+					 										if ( pi.getAbscisse() == absPi && pi.getOrdonnee() == ordPi)
+					 										{
+					 											ite.remove();
+					 										}
+					 									}
+					 								}
 						 							enlevePiece(c);
 						 							Cavalier c2 = new Cavalier ("BC", "blanc", x, y, p1.getPremierMouvement(),((Cavalier) p1).getMvt());
 						 							this.setTab(c2);
 							 				
-						 							if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
-						 							{
-						 								res = false;
-						 							}
+						 							try
+					 								{
+					 									if ( listPiece.get(cp).getAbscisse() != p4.getAbscisse() && listPiece.get(cp).getOrdonnee() != p4.getOrdonnee())
+					 									{
+					 										if ( DeplacementEstValide(listPiece.get(cp), this.getRoiB().getAbscisse(), this.getRoiB().getOrdonnee()))
+					 										{
+					 											res = false;
+					 										}
+					 									}
+						 							}catch ( IndexOutOfBoundsException e){}
+						 							
 						 							enlevePiece(c2);
 						 							Cavalier c3 = new Cavalier  ("BC", "blanc", absP, ordP, p1.getPremierMouvement(),((Cavalier) p1).getMvt() );
 						 							setTab(c3);
 						 							Roi r = new Roi ( "NR","noir",this.getRoiN().getAbscisse(),this.getRoiN().getOrdonnee(),this.getRoiN().getPremierMouvement(),this.getRoiN().getMvt());
 						 							setTab(r);
-						 							Pion p5 = new Pion("NP","noir",absD,ordD,p4.getPremierMouvement(),p4.getMvt());
+						 							Pion p5 = new Pion("NP","noir",absPi,ordPi,p4.getPremierMouvement(),p4.getMvt());
 						 							setTab(p5);
-						 							listPiece.add(p5);
+						 							
 						 						}
 						 					}
 							 			}
 						 				
 							 			}
-						 				cp ++;
+						 		cp ++;
 						 	}
 					 		
 					 	}
@@ -5221,7 +6679,7 @@ public class Echiquier
 						
 						return true;
 				 }
-			 }
+			 
 				 }
 				 else
 				 {
@@ -5239,16 +6697,16 @@ public class Echiquier
 		 {
 				 if ( DeplacementEstValide(p,x,y))
 				 {
-					System.out.println("1");
+					
 					 
 					 if ( p instanceof Roi)
 					 {
 						 Roi r1 = new Roi ( ( Roi) p);
-						 if ( this.getTab(x,y) instanceof Tour )
+						 if ( r1.getC().equals("noir"))
 						 {
-							 
-							 if ( r1.getC().equals("noir"))
-							 {
+						 if ( this.getTab(x,y) instanceof Tour && r1.getC().equals("noir") && this.getTab(x,y).getC().equals("noir"))
+						 {
+						 
 								 ArrayList<Piece> listPiece = new ArrayList<Piece>();
 								 for(int i=0;i<8;i++)
 								 {
@@ -5263,59 +6721,177 @@ public class Echiquier
 											}
 										}
 								 }
-								 
+							
 								 
 								 if ( r1.getOrdonnee() > this.getTab(x, y).getOrdonnee())
 								 {
-									    boolean roqueEstPossible = true;
+									 
+									 boolean roqueEstPossible = true;
 										int cpt = 0;
 										while (cpt < listPiece.size() && roqueEstPossible != false )
 										{
-											
 											if ( DeplacementEstValide(listPiece.get(cpt), 0, 2))
 											{
 												roqueEstPossible = false;
 											}
 											cpt ++;
 										}
-										
-									if (roqueEstPossible)
-									{
-										int absP = r1.getAbscisse();
-										int ordP = r1.getOrdonnee();
-										enlevePiece(r1);
-										Roi r = new Roi ("NR","noir",absP,ordP-2,p.getPremierMouvement(),p.getMvt() );
-										this.setTab(r);
-										Tour t = new Tour ("NT","noir",absP,ordP-1,getTab(x,y).getPremierMouvement(),getTab(x, y).getMvt());
-										this.setTab(t);
-										enlevePiece(getTab(x, y));
-										System.out.println("Vous venez d'effectuer un roque");
-										if ( echec(this,t))
-										 {
-											 System.out.println("Vous étes en ECHEC !!!!");
-							 		 
-											 if ( echecEtMat(this,t))
+									 
+										if (roqueEstPossible)
+										{
+											int absP = r1.getAbscisse();
+											int ordP = r1.getOrdonnee();
+											enlevePiece(r1);
+											Roi r = new Roi ("NR","noir",absP,ordP-2,p.getPremierMouvement(),p.getMvt() );
+											this.setTab(r);
+											Tour t = new Tour ("NT","noir",absP,ordP-1,getTab(x,y).getPremierMouvement(),getTab(x, y).getMvt());
+											this.setTab(t);
+											System.out.println("Vous venez d'effectuer un roque");
+											 enlevePiece(this.getTab(x, y));
+											if ( echec(this,t))
 											 {
-												 System.out.println("Vous étes  ECHEC et MAT !!!!");
-										
-												 if ( t.getC().equals("noir"))
+												 System.out.println("Vous étes en ECHEC !!!!");
+								 		 
+												 if ( echecEtMat(this,t))
 												 {
-													 setWinner("noir");
-												 }
-												 else
-												 {
-													 setWinner("blanc");
+													 System.out.println("Vous étes  ECHEC et MAT !!!!");
+											
+													 if ( t.getC().equals("noir"))
+													 {
+														 setWinner("noir");
+													 }
+													 else
+													 {
+														 setWinner("blanc");
+													 }
 												 }
 											 }
+											else
+											{
+											if ( t.getC().equals("noir"))
+											 {
+											     
+												 Jouer j1 = new Jouer( "blanc");
+												 if ( pat(j1))
+												 {
+													 	ArrayList<Piece >pi = new ArrayList<Piece>();
+													    for(int i=0;i<8;i++)
+														{
+													    	for(int j=0;j<8;j++)
+													    	{
+													    		if ((estOccupee(i,j)))
+																{
+													    			if (getTab(i,j).getC().equals("blanc"))
+																	{									
+																		pi.add(getTab(i,j));
+																	}
+																}
+															}
+														}
+													    if ( pi.size() == 1 )
+														{
+															ArrayList<Piece>p2 = new ArrayList<Piece>();
+															for(int i=0;i<8;i++)
+															{
+																		for(int j=0;j<8;j++)
+																		{
+																			if ((estOccupee(i,j)))
+																			{
+																				if (getTab(i,j).getC().equals("noir"))
+																				{									
+																					p2.add(getTab(i,j));
+																				}
+																			}
+																		}
+															}
+															if ( p2.size() == 1)
+															{
+																System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																setWinner("deuce");
+															}
+															else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    	
+														    }
+														}
+													    else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    }
+												 }
+												 
+											 }
+											else
+											 {
+												 Jouer j1 = new Jouer( "noir");
+												if ( pat(j1))
+												{
+														 	ArrayList<Piece >pi = new ArrayList<Piece>();
+														    for(int i=0;i<8;i++)
+															{
+														    	for(int j=0;j<8;j++)
+														    	{
+														    		if ((estOccupee(i,j)))
+																	{
+														    			if (getTab(i,j).getC().equals("noir"))
+																		{									
+																			pi.add(getTab(i,j));
+																		}
+																	}
+																}
+															}
+														    if ( pi.size() == 1 )
+															{
+																ArrayList<Piece>p2 = new ArrayList<Piece>();
+																for(int i=0;i<8;i++)
+																{
+																			for(int j=0;j<8;j++)
+																			{
+																				if ((estOccupee(i,j)))
+																				{
+																					if (getTab(i,j).getC().equals("blanc"))
+																					{									
+																						p2.add(getTab(i,j));
+																					}
+																				}
+																			}
+																}
+																if ( p2.size() == 1)
+																{
+																	System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																	setWinner("deuce");
+																}
+																else
+															    {
+															    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+															    	setWinner("null");
+															    	
+															    }
+															}
+														    else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    }
+													 }
+												
+											 }
+											 
 										 }
-									}
-									else
-									{
-										System.out.println("Vous ne pouvez pas effectuer de roque car vous mettriez votre roi en échec");
-									}
+											
+										}
+										
+										else
+										{
+											System.out.println("Vous ne pouvez pas effectuer de roque car vous mettriez votre roi en échec");
+										}
 								 }
-								 else
+								 else if ( r1.getOrdonnee() < this.getTab(x, y).getOrdonnee())
 								 {
+									 
 									 boolean roqueEstPossible = true;
 										int cpt = 0;
 										while (cpt < listPiece.size() && roqueEstPossible != false )
@@ -5326,17 +6902,18 @@ public class Echiquier
 											}
 											cpt ++;
 										}
-									
+										
 									if (roqueEstPossible)
 									{
+										
 										int absP = r1.getAbscisse();
 										int ordP = r1.getOrdonnee();
 										enlevePiece(r1);
-										Roi r = new Roi ("NR","noir",absP,ordP+2,p.getPremierMouvement(),p.getMvt());
+										Roi r = new Roi ("NR","noir",absP,ordP+2,p.getPremierMouvement(),p.getMvt() );
 										this.setTab(r);
 										Tour t = new Tour ("NT","noir",absP,ordP+1,getTab(x,y).getPremierMouvement(),getTab(x, y).getMvt());
 										this.setTab(t);
-										enlevePiece(getTab(x, y));
+										 enlevePiece(this.getTab(x, y));
 										System.out.println("Vous venez d'effectuer un roque");
 										if ( echec(this,t))
 										 {
@@ -5356,17 +6933,145 @@ public class Echiquier
 												 }
 											 }
 										 }
+										else
+										{
+										if ( t.getC().equals("noir"))
+										 {
+										     
+											 Jouer j1 = new Jouer( "blanc");
+											 if ( pat(j1))
+											 {
+												 	ArrayList<Piece >pi = new ArrayList<Piece>();
+												    for(int i=0;i<8;i++)
+													{
+												    	for(int j=0;j<8;j++)
+												    	{
+												    		if ((estOccupee(i,j)))
+															{
+												    			if (getTab(i,j).getC().equals("blanc"))
+																{									
+																	pi.add(getTab(i,j));
+																}
+															}
+														}
+													}
+												    if ( pi.size() == 1 )
+													{
+														ArrayList<Piece>p2 = new ArrayList<Piece>();
+														for(int i=0;i<8;i++)
+														{
+																	for(int j=0;j<8;j++)
+																	{
+																		if ((estOccupee(i,j)))
+																		{
+																			if (getTab(i,j).getC().equals("noir"))
+																			{									
+																				p2.add(getTab(i,j));
+																			}
+																		}
+																	}
+														}
+														if ( p2.size() == 1)
+														{
+															System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+															setWinner("deuce");
+														}
+														else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    	
+													    }
+													}
+												    else
+												    {
+												    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+												    	setWinner("null");
+												    }
+											 }
+											 
+										 }
+										else
+										 {
+											 Jouer j1 = new Jouer( "noir");
+											if ( pat(j1))
+											{
+													 	ArrayList<Piece >pi = new ArrayList<Piece>();
+													    for(int i=0;i<8;i++)
+														{
+													    	for(int j=0;j<8;j++)
+													    	{
+													    		if ((estOccupee(i,j)))
+																{
+													    			if (getTab(i,j).getC().equals("noir"))
+																	{									
+																		pi.add(getTab(i,j));
+																	}
+																}
+															}
+														}
+													    if ( pi.size() == 1 )
+														{
+															ArrayList<Piece>p2 = new ArrayList<Piece>();
+															for(int i=0;i<8;i++)
+															{
+																		for(int j=0;j<8;j++)
+																		{
+																			if ((estOccupee(i,j)))
+																			{
+																				if (getTab(i,j).getC().equals("blanc"))
+																				{									
+																					p2.add(getTab(i,j));
+																				}
+																			}
+																		}
+															}
+															if ( p2.size() == 1)
+															{
+																System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																setWinner("deuce");
+															}
+															else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    	
+														    }
+														}
+													    else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    }
+												 }
+											
+										 }
+										 
+									 }
+										
 									}
 									else
 									{
 										System.out.println("Vous ne pouvez pas effectuer de roque car vous mettriez votre roi en échec");
 									}
 								 }
-									
-							 }
-							 else
+							 
+						 }
+						 else
+						 {
+							 
+							 this.enlevePiece(p);
+							 this.tab[x][y]=p;
+							 p.setAbscisse(x);
+							 p.setOrdonnee(y);
+							 enlevePiece(this.getTab(x, y));
+						 }
+					 }
+						 if ( this.getTab(x,y) instanceof Tour && r1.getC().equals("blanc") && this.getTab(x,y).getC().equals("blanc"))
+						 { 
+							 if ( r1.getC().equals("blanc") && this.getTab(x,y).getC().equals("blanc"))
 							 {
-								 System.out.println("1");
+								 System.out.println(this.getTab(x,y).getNom()+"/////////");
 								 ArrayList<Piece> listPiece = new ArrayList<Piece>();
 								 for(int i=0;i<8;i++)
 								 {
@@ -5404,7 +7109,7 @@ public class Echiquier
 											this.setTab(r);
 											Tour t = new Tour ("BT","blanc",absP,ordP-1,getTab(x,y).getPremierMouvement(),getTab(x, y).getMvt());
 											this.setTab(t);
-											enlevePiece(getTab(x, y));
+											 enlevePiece(this.getTab(x, y));
 											System.out.println("Vous venez d'effectuer un roque");
 											if ( echec(this,t))
 											 {
@@ -5424,6 +7129,122 @@ public class Echiquier
 													 }
 												 }
 											 }
+											else
+											{
+											if ( t.getC().equals("noir"))
+											 {
+											     
+												 Jouer j1 = new Jouer( "blanc");
+												 if ( pat(j1))
+												 {
+													 	ArrayList<Piece >pi = new ArrayList<Piece>();
+													    for(int i=0;i<8;i++)
+														{
+													    	for(int j=0;j<8;j++)
+													    	{
+													    		if ((estOccupee(i,j)))
+																{
+													    			if (getTab(i,j).getC().equals("blanc"))
+																	{									
+																		pi.add(getTab(i,j));
+																	}
+																}
+															}
+														}
+													    if ( pi.size() == 1 )
+														{
+															ArrayList<Piece>p2 = new ArrayList<Piece>();
+															for(int i=0;i<8;i++)
+															{
+																		for(int j=0;j<8;j++)
+																		{
+																			if ((estOccupee(i,j)))
+																			{
+																				if (getTab(i,j).getC().equals("noir"))
+																				{									
+																					p2.add(getTab(i,j));
+																				}
+																			}
+																		}
+															}
+															if ( p2.size() == 1)
+															{
+																System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																setWinner("deuce");
+															}
+															else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    	
+														    }
+														}
+													    else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    }
+												 }
+												 
+											 }
+											else
+											 {
+												 Jouer j1 = new Jouer( "noir");
+												if ( pat(j1))
+												{
+														 	ArrayList<Piece >pi = new ArrayList<Piece>();
+														    for(int i=0;i<8;i++)
+															{
+														    	for(int j=0;j<8;j++)
+														    	{
+														    		if ((estOccupee(i,j)))
+																	{
+														    			if (getTab(i,j).getC().equals("noir"))
+																		{									
+																			pi.add(getTab(i,j));
+																		}
+																	}
+																}
+															}
+														    if ( pi.size() == 1 )
+															{
+																ArrayList<Piece>p2 = new ArrayList<Piece>();
+																for(int i=0;i<8;i++)
+																{
+																			for(int j=0;j<8;j++)
+																			{
+																				if ((estOccupee(i,j)))
+																				{
+																					if (getTab(i,j).getC().equals("blanc"))
+																					{									
+																						p2.add(getTab(i,j));
+																					}
+																				}
+																			}
+																}
+																if ( p2.size() == 1)
+																{
+																	System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																	setWinner("deuce");
+																}
+																else
+															    {
+															    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+															    	setWinner("null");
+															    	
+															    }
+															}
+														    else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    }
+													 }
+												
+											 }
+											 
+										 }
+											
 										}
 										else
 										{
@@ -5454,7 +7275,7 @@ public class Echiquier
 										this.setTab(r);
 										Tour t = new Tour ("BT","blanc",absP,ordP+1,getTab(x,y).getPremierMouvement(),getTab(x, y).getMvt());
 										this.setTab(t);
-										enlevePiece(getTab(x, y));
+										 enlevePiece(this.getTab(x, y));
 										System.out.println("Vous venez d'effectuer un roque");
 										if ( echec(this,t))
 										 {
@@ -5474,6 +7295,123 @@ public class Echiquier
 												 }
 											 }
 										 }
+										
+										else
+										{
+										if ( t.getC().equals("noir"))
+										 {
+										     
+											 Jouer j1 = new Jouer( "blanc");
+											 if ( pat(j1))
+											 {
+												 	ArrayList<Piece >pi = new ArrayList<Piece>();
+												    for(int i=0;i<8;i++)
+													{
+												    	for(int j=0;j<8;j++)
+												    	{
+												    		if ((estOccupee(i,j)))
+															{
+												    			if (getTab(i,j).getC().equals("blanc"))
+																{									
+																	pi.add(getTab(i,j));
+																}
+															}
+														}
+													}
+												    if ( pi.size() == 1 )
+													{
+														ArrayList<Piece>p2 = new ArrayList<Piece>();
+														for(int i=0;i<8;i++)
+														{
+																	for(int j=0;j<8;j++)
+																	{
+																		if ((estOccupee(i,j)))
+																		{
+																			if (getTab(i,j).getC().equals("noir"))
+																			{									
+																				p2.add(getTab(i,j));
+																			}
+																		}
+																	}
+														}
+														if ( p2.size() == 1)
+														{
+															System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+															setWinner("deuce");
+														}
+														else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    	
+													    }
+													}
+												    else
+												    {
+												    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+												    	setWinner("null");
+												    }
+											 }
+											 
+										 }
+										else
+										 {
+											 Jouer j1 = new Jouer( "noir");
+											if ( pat(j1))
+											{
+													 	ArrayList<Piece >pi = new ArrayList<Piece>();
+													    for(int i=0;i<8;i++)
+														{
+													    	for(int j=0;j<8;j++)
+													    	{
+													    		if ((estOccupee(i,j)))
+																{
+													    			if (getTab(i,j).getC().equals("noir"))
+																	{									
+																		pi.add(getTab(i,j));
+																	}
+																}
+															}
+														}
+													    if ( pi.size() == 1 )
+														{
+															ArrayList<Piece>p2 = new ArrayList<Piece>();
+															for(int i=0;i<8;i++)
+															{
+																		for(int j=0;j<8;j++)
+																		{
+																			if ((estOccupee(i,j)))
+																			{
+																				if (getTab(i,j).getC().equals("blanc"))
+																				{									
+																					p2.add(getTab(i,j));
+																				}
+																			}
+																		}
+															}
+															if ( p2.size() == 1)
+															{
+																System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+																setWinner("deuce");
+															}
+															else
+														    {
+														    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+														    	setWinner("null");
+														    	
+														    }
+														}
+													    else
+													    {
+													    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+													    	setWinner("null");
+													    }
+												 }
+											
+										 }
+										 
+									 }
+										
 									}
 									else
 									{
@@ -5481,9 +7419,11 @@ public class Echiquier
 									}
 								 }
 							 }
+							 
 						 }
 						 else
 						 {
+							 
 							 this.enlevePiece(p);
 							 this.tab[x][y]=p;
 							 p.setAbscisse(x);
@@ -5497,7 +7437,7 @@ public class Echiquier
 					 }
 					 
 					 
-					 
+					 	
 						 if ( p instanceof Pion )
 						 {
 							 if (p.getPremierMouvement())
@@ -5529,9 +7469,8 @@ public class Echiquier
 								 
 								 else
 								 {
-									 
+									 this.tab[x][y]=p; 
 									 this.enlevePiece(p);
-									 this.tab[x][y]=p;
 									 p.setAbscisse(x);
 									 p.setOrdonnee(y);
 									 
@@ -5562,9 +7501,9 @@ public class Echiquier
 								 
 								 else
 								 {
-									 System.out.println("1");
-									 this.enlevePiece(p);
 									 this.tab[x][y]=p;
+									 this.enlevePiece(p);
+									
 									 p.setAbscisse(x);
 									 p.setOrdonnee(y);
 								 }
@@ -5573,7 +7512,7 @@ public class Echiquier
 							 
 							 if ( Promotion(p) )
 							 {
-								 System.out.println("cc");
+								 
 								    Scanner sc = new Scanner (System.in);
 									String rep = "";
 									boolean res = false;
@@ -5614,6 +7553,7 @@ public class Echiquier
 						 
 						 if (!( p instanceof Roi || p instanceof Pion))
 						 {
+							
 							 this.enlevePiece(p);
 							 this.tab[x][y]=p;
 							 p.setAbscisse(x);
@@ -5625,11 +7565,10 @@ public class Echiquier
 				 	{
 				 		System.out.println( "Mouvement impossible");
 				 	} 
-				 
 				 if ( echec(this,p))
 				 {
-					 System.out.println("Vous étes en ECHEC !!!!");
 					 
+					 System.out.println("Vous étes en ECHEC !!!!");
 					 if ( echecEtMat(this,p))
 					 {
 						 System.out.println("Vous étes  ECHEC et MAT !!!!");
@@ -5644,34 +7583,129 @@ public class Echiquier
 						 }
 					 }
 				 }
-				 
+				
 				 else
 				 {
 					 
 					if ( p.getC().equals("noir"))
 					 {
-					     
-						 Jouer j = new Jouer( "blanc");
-						 if ( pat(j))
+					     System.out.println("7578");
+						 Jouer j1 = new Jouer( "blanc");
+						 if ( pat(j1))
 						 {
-							 System.out.println("Il est impossible de continuer, le joueur "+ j.getJ()+" ne peut avancer aucune pièce");
-							 setWinner("null");
+							
+							 	ArrayList<Piece >pi = new ArrayList<Piece>();
+							    for(int i=0;i<8;i++)
+								{
+							    	for(int j=0;j<8;j++)
+							    	{
+							    		if ((estOccupee(i,j)))
+										{
+							    			if (getTab(i,j).getC().equals("blanc"))
+											{									
+												pi.add(getTab(i,j));
+											}
+										}
+									}
+								}
+							    if ( pi.size() == 1 )
+								{
+									ArrayList<Piece>p2 = new ArrayList<Piece>();
+									for(int i=0;i<8;i++)
+									{
+												for(int j=0;j<8;j++)
+												{
+													if ((estOccupee(i,j)))
+													{
+														if (getTab(i,j).getC().equals("noir"))
+														{									
+															p2.add(getTab(i,j));
+														}
+													}
+												}
+									}
+									if ( p2.size() == 1)
+									{
+										System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+										setWinner("deuce");
+									}
+									else
+								    {
+								    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+								    	setWinner("null");
+								    	
+								    }
+								}
+							    else
+							    {
+							    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+							    	setWinner("null");
+							    }
 						 }
 						 
 					 }
 					 else
 					 {
-						 System.out.println("2");
-						 Jouer j = new Jouer( "noir");
-						 if ( pat(j))
-						 {
-							 System.out.println("Il est impossible de continuer, le joueur "+ j.getJ()+" ne peut avancer aucune pièce");
-							 setWinner("null");
-						 }
+						 
+						 Jouer j1 = new Jouer( "noir");
+						if ( pat(j1))
+						{
+							 
+								 	ArrayList<Piece >pi = new ArrayList<Piece>();
+								    for(int i=0;i<8;i++)
+									{
+								    	for(int j=0;j<8;j++)
+								    	{
+								    		if ((estOccupee(i,j)))
+											{
+								    			if (getTab(i,j).getC().equals("noir"))
+												{									
+													pi.add(getTab(i,j));
+												}
+											}
+										}
+									}
+								   
+								    if ( pi.size() == 1 )
+									{
+										ArrayList<Piece>p2 = new ArrayList<Piece>();
+										for(int i=0;i<8;i++)
+										{
+													for(int j=0;j<8;j++)
+													{
+														if ((estOccupee(i,j)))
+														{
+															if (getTab(i,j).getC().equals("blanc"))
+															{									
+																p2.add(getTab(i,j));
+															}
+														}
+													}
+										}
+										if ( p2.size() == 1)
+										{
+											System.out.println("Il n'y a plus que les rois sur l'échiquier.");
+											setWinner("deuce");
+										}
+										else
+									    {
+									    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+									    	setWinner("null");
+									    	
+									    }
+									}
+								    else
+								    {
+								    	System.out.println("Il est impossible de continuer, le joueur "+ j1.getJ()+" ne peut avancer aucune pièce");
+								    	setWinner("null");
+								    	
+								    }
+							 }
 						
 					 }
 					 
 				 }
+				
 }
 		 
 		 
@@ -5723,6 +7757,7 @@ public class Echiquier
 			 
 				 if ( p1.getC().equals("blanc"))
 				 {
+					 System.out.println("7682");
 					try
 					{
 						if ( DeplacementEstValide(ech.getRoiN(),ech.getRoiN().getAbscisse()+1,ech.getRoiN().getOrdonnee()))// J avance de une ligne.
@@ -5807,15 +7842,19 @@ public class Echiquier
 					
 					for ( int i = 0; i < p.size(); i++)
 					{
+						if ( !(p.get(i).getNom().equals("NR")))
+						{
 						if ( DeplacementEstValide(p.get(i),p1.getAbscisse(),p1.getOrdonnee()))// Si une pièce noire peut manger la pièce mettant le roi noir en echec
 						{																	  // Il n'y a alors pas echec et mat.
 							res = false;
+						}
 						}
 					}
 					if ( res == false)
 					{
 						return res;
 					}
+					System.out.println("7779");
 					if ( p1 instanceof Fou)
 					{
 						if  ( p1.getAbscisse() > ech.getRoiN().getAbscisse() && p1.getOrdonnee() < ech.getRoiN().getOrdonnee()) // Mouvement du haut vers le bas à droite
@@ -5904,8 +7943,10 @@ public class Echiquier
 					
 					if ( p1 instanceof Tour )
 					{
+						;
 						if ( p1.getAbscisse() == ech.getRoiN().getAbscisse() && p1.getOrdonnee() < ech.getRoiN().getOrdonnee())// gauche vers droite
 						{
+							
 							for ( int i = 0; i < p.size(); i++ )
 							{
 						
@@ -5925,6 +7966,7 @@ public class Echiquier
 						
 						if ( p1.getAbscisse() == ech.getRoiN().getAbscisse() && p1.getOrdonnee() > ech.getRoiN().getOrdonnee())// droite vers gauche
 						{
+							
 							for ( int i = 0; i < p.size(); i++ )
 							{
 						
@@ -5932,9 +7974,12 @@ public class Echiquier
 								int ord = p1.getOrdonnee()-1;
 								while ( ord >= ech.getRoiN().getOrdonnee()+1 && res != false)
 								{
-									if ( DeplacementEstValide(p.get(i),abs,ord))
+									if ( !(p.get(i).getNom().equals("NR")))
 									{
-										res = false;
+										if ( DeplacementEstValide(p.get(i),abs,ord))
+										{
+											res = false;
+										}
 									}
 									ord --;
 								}	
@@ -6140,15 +8185,17 @@ public class Echiquier
 					return res;
 				 }
 			  }
+			   
 			   return res;
 		    }
 			else
 			{
-				
+				System.out.println("8095");
 					try
 					{
 						if ( DeplacementEstValide(ech.getRoiB(),ech.getRoiB().getAbscisse()+1,ech.getRoiB().getOrdonnee()))// J avance de une ligne.
 						{
+							
 							return false;
 						}
 					}catch(ArrayIndexOutOfBoundsException |NullPointerException e){};
@@ -6157,7 +8204,7 @@ public class Echiquier
 					{
 						if ( DeplacementEstValide(ech.getRoiB(),ech.getRoiB().getAbscisse()+1,ech.getRoiB().getOrdonnee()+1))// J avance de une ligne et une colonne.
 						{
-						return false;
+							return false;
 						}
 					}catch(ArrayIndexOutOfBoundsException |NullPointerException e){};
 					 
@@ -6210,6 +8257,8 @@ public class Echiquier
 						}
 					}catch(ArrayIndexOutOfBoundsException |NullPointerException e){};
 					
+					
+					
 					ArrayList<Piece> p = new ArrayList<Piece>();
 					 for(int i=0;i<8;i++)
 					{
@@ -6225,14 +8274,17 @@ public class Echiquier
 							}
 					}	
 					
-					
 					for ( int i = 0; i < p.size(); i++)
 					{
 						try
 						{
+							if ( !(p.get(i).getNom().equals("BR")))
+							{
 							if ( DeplacementEstValide(p.get(i),p1.getAbscisse(),p1.getOrdonnee()))// Si une pièce noire peut manger la pièce mettant le roi noir en echec
 							{																	  // Il n'y a alors pas echec et mat.
 								res = false;
+								System.out.println(p.get(i).getNom());
+							}
 							}
 						}catch(ArrayIndexOutOfBoundsException |NullPointerException e){};
 					}
@@ -6240,7 +8292,7 @@ public class Echiquier
 					{
 						return res;
 					}
-					
+					System.out.println("8194");
 					if ( p1 instanceof Fou)
 					{
 						
@@ -6616,7 +8668,6 @@ public class Echiquier
 					return res;
 				 }
 			 }
-			
 			return res;
 		 }
 		
@@ -6641,7 +8692,7 @@ public class Echiquier
 			{
 				if ( p1.getC().equals("noir") )
 				{
-					System.out.println("cyril");
+					
 					Dame d = new Dame("ND", "noir", p1.getAbscisse(), p1.getOrdonnee(), p1.getPremierMouvement(),p1.getMvt()  );
 					this.setTab(d);
 					return d;
@@ -6740,26 +8791,49 @@ public class Echiquier
 		public boolean pat(Jouer j1)
 		{
 			boolean res = true;
+			
 			ArrayList<Piece>p;
 			if ( j1.getJ().equals("noir"))
 			{
 				
 				p = new ArrayList<Piece>();
-				 for(int i=0;i<8;i++)
+			    for(int i=0;i<8;i++)
+				{
+			    	for(int j=0;j<8;j++)
+			    	{
+			    		if ((estOccupee(i,j)))
+						{
+			    			if (getTab(i,j).getC().equals("noir"))
+							{									
+								p.add(getTab(i,j));
+							}
+						}
+					}
+				}
+			    if ( p.size() == 1 )
+				{
+					ArrayList<Piece>p2 = new ArrayList<Piece>();
+					for(int i=0;i<8;i++)
 					{
-							for(int j=0;j<8;j++)
-							{
-								if ((estOccupee(i,j)))
+								for(int j=0;j<8;j++)
 								{
-									if (getTab(i,j).getC().equals("noir"))
-									{									
-										p.add(getTab(i,j));
+									if ((estOccupee(i,j)))
+									{
+										if (getTab(i,j).getC().equals("blanc"))
+										{									
+											p2.add(getTab(i,j));
+										}
 									}
 								}
-							}
-					}	
+					}
+					if ( p2.size() == 1)
+					{
+						return res;
+					}
+				}
 					
 				 	int i = 0;
+				 	
 					while ( i < p.size() && res != false)
 					{
 						int l = p.get(i).getAbscisse();
@@ -6770,19 +8844,21 @@ public class Echiquier
 					    {
 								    try
 								    {
+								    	if ( !(p.get(i).getNom().equals("NR")))
+								    	{
 								    	if ( DeplacementEstValide(p.get(i), l, c+1))// mvt gauche droite
 								    	{
-								    		
+								    		System.out.println(p.get(i).getNom());
 								    		res = false;
 								    	}
-								    	
+								    	}
 								    }catch(Exception e) {}
 					    }
 					    if ( res == false)
 					    {
 					    	return res;
 					    }
-					    
+					   
 					     c = p.get(i).getOrdonnee();
 					    	
 					   if( c >=0 && res != false )
@@ -6801,7 +8877,6 @@ public class Echiquier
 					    {
 					    	return res;
 					    }
-					   
 					     c = p.get(i).getOrdonnee();
 				    	
 					  if( l < 7 && res != false )
@@ -6842,6 +8917,7 @@ public class Echiquier
 					    
 					    if ( res == false)
 					    {
+					    	
 					    	return res;
 					    }
 					    
@@ -6931,11 +9007,13 @@ public class Echiquier
 					    i++;
 						
 					}
+					
 					return res; 	
 				
 			}
 			else
 			{
+				
 				p = new ArrayList<Piece>();
 			    for(int i=0;i<8;i++)
 				{
@@ -6950,7 +9028,27 @@ public class Echiquier
 						}
 					}
 				}
-			    
+			    if ( p.size() == 1 )
+				{
+					ArrayList<Piece>p2 = new ArrayList<Piece>();
+					for(int i=0;i<8;i++)
+					{
+								for(int j=0;j<8;j++)
+								{
+									if ((estOccupee(i,j)))
+									{
+										if (getTab(i,j).getC().equals("noir"))
+										{									
+											p2.add(getTab(i,j));
+										}
+									}
+								}
+					}
+					if ( p2.size() == 1)
+					{
+						return res;
+					}
+				}
 			    int i = 0;
 				while ( i < p.size() && res != false)
 				{
@@ -7123,4 +9221,24 @@ public class Echiquier
 			return res;
 			
 		}	
+		
+		public void Echange ( Echiquier ech )
+		{
+			
+			for ( int i = 0; i < 8; i ++)
+			{
+				for ( int j  = 0 ; j < 8 ; j ++ )
+				{
+					if ( ech.estOccupee(i, j))
+					{
+						this.setTab(ech.getTab(i, j));
+					}
+					
+				}
+			}
+			
+		
+		}
+		
+	
 }
